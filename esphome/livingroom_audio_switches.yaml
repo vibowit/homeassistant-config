@@ -23,11 +23,12 @@ binary_sensor:
       number: GPIO0
       mode: INPUT_PULLUP
       inverted: True
-    name: "{channel_1} Button"
+    name: "${channel_1} Button"
   - platform: status
     name: "${name} Status"
-    
+
 switch:
   - platform: gpio
     name: "${channel_1}"
     pin: GPIO12
+
