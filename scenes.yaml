@@ -1,0 +1,145 @@
+- id: darken_down
+  name: Darken Down
+  entities:
+    switch.ikeaplug01_switch:
+      linkquality: 31
+      state: 'off'
+      update_available: true
+      friendly_name: IkeaPlug01
+    switch.mini03:
+      friendly_name: Mini03
+      state: 'off'
+    switch.mini04:
+      friendly_name: Mini04
+      state: 'off'
+    switch.mini06:
+      friendly_name: Mini06
+      state: 'off'
+    light.kitchen_upper:
+      friendly_name: Kitchen Upper
+      supported_features: 0
+      state: 'off'
+    light.tv:
+      friendly_name: TV
+      supported_features: 0
+      state: 'off'
+    light.tv_side:
+      friendly_name: TV Side
+      supported_features: 0
+      state: 'off'
+    light.stairs_christmas:
+      friendly_name: Stairs Christmas
+      supported_features: 0
+      state: 'off'
+- id: enlighten_down
+  name: Enlighten Down
+  entities:
+    switch.mini03:
+      friendly_name: Mini03
+      state: 'on'
+    switch.mini04:
+      friendly_name: Mini04
+      state: 'on'
+    switch.mini06:
+      friendly_name: Mini06
+      state: 'on'
+    switch.ikeaplug01_switch:
+      linkquality: 65
+      state: 'on'
+      update_available: true
+      friendly_name: IkeaPlug01
+    light.kitchen_upper:
+      friendly_name: Kitchen Upper
+      supported_features: 0
+      state: 'on'
+    light.tv:
+      friendly_name: TV
+      supported_features: 0
+      state: 'on'
+    light.tv_side:
+      friendly_name: TV Side
+      supported_features: 0
+      state: 'on'
+    light.stairs_christmas:
+      friendly_name: Stairs Christmas
+      supported_features: 0
+      state: 'on'
+- id: '1609587500796'
+  name: Christmas
+  entities:
+    light.tv:
+      friendly_name: TV
+      supported_features: 0
+      state: 'on'
+    light.stairs_christmas:
+      friendly_name: Stairs Christmas
+      supported_features: 0
+      state: 'on'
+    light.zosia_wall:
+      friendly_name: Choinka
+      supported_features: 0
+      state: 'on'
+- id: '1610725345929'
+  name: Leave Home
+  entities:
+    light.inside_lights:
+      entity_id:
+      - light.downstairs_lights
+      - light.upstairs_lights
+      friendly_name: Inside Lights
+      icon: mdi:lightbulb-group
+      supported_features: 8
+      state: 'off'
+  icon: mdi:home-export-outline
+- id: '1610725547056'
+  name: Arrive Home
+  entities:
+    light.tv:
+      friendly_name: TV
+      supported_features: 0
+      state: 'on'
+    light.tv_side:
+      friendly_name: TV Side
+      supported_features: 0
+      state: 'on'
+    light.kitchen_table:
+      friendly_name: Kitchen Table
+      supported_features: 0
+      state: 'on'
+    light.hall:
+      friendly_name: Hall
+      supported_features: 0
+      state: 'on'
+    light.stairs:
+      friendly_name: Stairs
+      supported_features: 0
+      state: 'on'
+  icon: mdi:home-outline
+- id: '1610752476532'
+  name: Test Music
+  entities:
+    media_player.spotify_boguslaw_witkowski:
+      source_list:
+      - Bedroom speaker
+      volume_level: 0.15
+      media_content_id: spotify:track:70lBliYWLJe5kJhvFlbJiH
+      media_content_type: music
+      media_duration: 174.496
+      media_position: 28.639
+      media_position_updated_at: '2021-01-15T23:13:51.043000+00:00'
+      media_title: Złoto
+      media_artist: MaJLo, Natalia Grosiak
+      media_album_name: Złoto
+      media_track: 1
+      media_playlist: Zimowy chill
+      source: Bedroom speaker
+      shuffle: false
+      repeat: 'off'
+      friendly_name: Spotify Boguslaw Witkowski
+      icon: mdi:spotify
+      entity_picture: /api/media_player_proxy/media_player.spotify_boguslaw_witkowski?token=5af9708c86d95202319713dd5725a43767673360ba5972b7284eda2eb7ccfb47&cache=a4c14825f6a4ad7c
+      supported_features: 444983
+      state: playing
+- id: '1613948985516'
+  name: Bedroom Evening
+  entities: {}

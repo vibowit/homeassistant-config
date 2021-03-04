@@ -1,0 +1,63 @@
+esphome:
+  name: garage_door
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: on
+  
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Garage Door Fallback Hotspot"
+    password: "VKl5XJ4WHCnx"
+
+# captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret ap_wifi_password
+
+ota:
+  password: !secret ap_wifi_password
+
+web_server:
+  port: 80
+
+switch:
+  - platform: gpio
+    name: "Relay 2"
+    pin: D2
+    id: garage_relay
+    #inverted: yes
+    internal: true
+    
+  - platform: template
+    name: "Garage Remote"
+    icon: "mdi:garage"
+    turn_on_action:
+    - switch.turn_on: garage_relay
+    - delay: 500ms
+    - switch.turn_off: garage_relay
+
+# Example configuration entry
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: D7
+      mode: INPUT_PULLUP
+    name: "Garage Door"
+    device_class: door
+# Example configuration entry
+#sensor:
+#  - platform: ultrasonic
+#    trigger_pin: D7
+#    echo_pin: D8
+#    name: "Ultrasonic Sensor"
+#    update_interval: 20s
+#    timeout: 2.0m

@@ -1,0 +1,23 @@
+family:
+  name: Family
+  entities:
+    - group.rodzice
+    - group.dzieci
+
+rodzice:
+  name: Rodzice
+  entities:
+    - person.boguslaw_witkowski
+    - person.luiza_witkowska
+
+dzieci:
+  name: Dzieci
+  entities:
+    - person.wiktor_witkowski
+    - person.zosia_witkowska
+
+# Bogus: device_tracker.bogus_phone, device_tracker.bogus_laptop
+# Luiza: device_tracker.galaxy_m51_lw
+# Zosia: device_tracker.zosia_huawei_y7, device_tracker.zosia_laptop
+# Wiktor: device_tracker.wiktor_phone
+# Maly: device_tracker.maly_phone

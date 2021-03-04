@@ -1,0 +1,487 @@
+- id: move_light_on
+  alias: Turn On Light - Motion
+  description: Włącz światło gdy wykryjesz ruch
+  trigger:
+    platform: state
+    entity_id:
+    - binary_sensor.hall_occupancy
+    - binary_sensor.garage_occupancy
+    to: 'on'
+  condition:
+    condition: or
+    conditions:
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: 4
+    - condition: template
+      value_template: '{{ state_attr(trigger.entity_id,''illuminance'') | float <
+        20 }}
+
+        '
+  action:
+  - service: light.turn_on
+    data_template:
+      entity_id: 'light.{{ trigger.entity_id.split(''.'')[1].split(''_'')[0] }}
+
+        '
+- id: no_move_light_off
+  alias: Turn Off Light - No Motion
+  trigger:
+    platform: state
+    entity_id:
+    - binary_sensor.hall_occupancy
+    - binary_sensor.garage_occupancy
+    to: 'off'
+    for: 00:00:30
+  action:
+  - service: light.turn_off
+    data_template:
+      entity_id: 'light.{{ trigger.entity_id.split(''.'')[1].split(''_'')[0] }}
+
+        '
+- alias: Notify Me - Garage Move
+  trigger:
+  - entity_id: binary_sensor.garage_occupancy
+    platform: state
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: group.family
+      state: not_home
+    - condition: template
+      value_template: '{{ (now()-states.automation.wylacz_swiatlo_garaz_bezruch.attributes.last_triggered).seconds
+        > 600 }}'
+    - condition: template
+      value_template: '{{ (now()-states.automation.notify_me_garage_move.attributes.last_triggered).seconds
+        > 600 }}'
+  action:
+  - service: telegram_bot.send_message
+    data:
+      message: Presence Detected while nobody is home
+      title: Your Garage Pir Friend
+  - entity_id: light.kitchen_upper
+    service: light.turn_on
+  initial_state: true
+  id: 3505342ab01542f19d6a1531c0a6e4f6
+- id: rainy_day
+  alias: Rainy Day
+  trigger:
+  - platform: state
+    entity_id: weather.home
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state in ["rainy", "cloudy", "snowy", "snowy,rainy"]
+      }}'
+  - condition: state
+    entity_id: group.family
+    state: home
+  - condition: time
+    after: '14:00'
+    before: '23:00'
+  action:
+    service: light.turn_on
+    entity_id: light.kitchen_upper
+- id: nobody_home_lights_off
+  alias: Nobody Home Lights Off
+  description: Turn Off Lights When Nobody is Home
+  initial_state: 'true'
+  trigger:
+  - platform: state
+    entity_id: group.family
+    to: not_home
+    for:
+      seconds: 60
+  action:
+  - service: light.turn_off
+    entity_id: light.inside_lights
+  - service: telegram_bot.send_message
+    data:
+      message: Wyłączam światła
+      title: Wszyscy wyszli
+- id: stairs_lights_on
+  alias: Turn On Stairs Lights
+  description: Włącz światło, żeby Luiza się nie potykała
+  trigger:
+    entity_id:
+    - binary_sensor.aquaramotion01_occupancy
+    - binary_sensor.aquaramotion02_occupancy
+    platform: state
+    to: 'on'
+  condition:
+  - below: 9
+    condition: numeric_state
+    entity_id: sensor.aquaramotion01_illuminance
+  action:
+  - service: light.turn_on
+    entity_id: light.stairs
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.stairs_switch_auto_on
+- id: stairs_lights_off
+  alias: Turn Off Stairs Lights
+  description: Wyłącz światło na schodach po 3 minutach
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.aquaramotion01_occupancy
+    - binary_sensor.aquaramotion02_occupancy
+    to: 'off'
+    for:
+      minutes: 3
+  condition:
+  - condition: state
+    entity_id: input_boolean.stairs_switch_auto_on
+    state: 'on'
+  - condition: state
+    entity_id: light.stairs
+    state: 'on'
+  action:
+  - service: light.turn_off
+    entity_id: light.stairs
+- id: stairs_light_off_manually
+  alias: Stairs Light Turned Off Manually
+  trigger:
+  - platform: state
+    entity_id: light.stairs
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.stairs_switch_auto_on
+    state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.stairs_switch_auto_on
+- id: music_morning
+  alias: Morning Music
+  trigger:
+  - entity_id: sensor.stairs_direction
+    platform: state
+    to: down
+  condition:
+  - condition: and
+    conditions:
+    - after: 07:00:00
+      before: '11:00:00'
+      condition: time
+    - condition: template
+      value_template: '{{ not is_state(''media_player.main_audio'', ''playing'') }}'
+  action:
+  - entity_id: script.spotify_morning
+    service: script.turn_on
+- id: maly_in_da_house
+  alias: Maly Dotarl
+  trigger:
+  - platform: state
+    entity_id: group.maly
+    to: home
+  condition:
+  - condition: state
+    entity_id: light.kitchen_upper
+    state: 'on'
+  action:
+  - entity_id: light.kitchen_upper
+    service: light.turn_off
+  - entity_id: light.kitchen_table
+    service: light.turn_on
+- id: music_evening
+  alias: Evening Music
+  trigger:
+  - platform: state
+    entity_id: group.rodzice
+    to: home
+  condition:
+    condition: and
+    conditions:
+    - after: '16:00:00'
+      before: '22:00:00'
+      condition: time
+    - condition: template
+      value_template: '{{ not is_state(''media_player.main_audio'', ''playing'') }}'
+  action:
+    service: script.turn_on
+    entity_id: script.spotify_evening
+- id: movie_mode_button
+  alias: Movie Mode Button
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.blue_button
+    - sensor.ikeabutton04_action
+    to:
+    - 'on'
+    - toggle
+  action:
+    service: switch.toggle
+    entity_id: switch.movie_mode
+- id: turn_on_porch
+  alias: Turn On Porch Light
+  description: Turn on porch light when the sun is set
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
+  action:
+  - entity_id: light.porch
+    service: light.turn_on
+- id: turn_off_porch
+  alias: Turn Off Porch Light
+  description: Turn off porch light when the sun rises
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    to: above_horizon
+  action:
+  - entity_id: light.porch
+    service: light.turn_off
+- id: zosia_guzik
+  alias: Zosia Guzik
+  trigger:
+  - platform: state
+    entity_id: sensor.ikeabutton01_action
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sensor.ikeabutton01_action
+        state: 'on'
+      sequence:
+      - service: light.turn_on
+        entity_id: light.zosia_wall
+    - conditions:
+      - condition: state
+        entity_id: sensor.ikeabutton01_action
+        state: 'off'
+      sequence:
+      - service: light.turn_off
+        entity_id: light.zosia_wall
+- id: bedroom_button
+  alias: Bedroom Button
+  trigger:
+  - platform: state
+    entity_id: sensor.ikeabutton02_action
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sensor.ikeabutton02_action
+        state: 'on'
+      sequence:
+      - service: light.turn_on
+        entity_id: light.bedroom_bed
+    - conditions:
+      - condition: state
+        entity_id: sensor.ikeabutton02_action
+        state: 'off'
+      sequence:
+      - service: light.turn_off
+        entity_id: light.bedroom_bed
+- id: bedroom_move_on
+  alias: Bedroom Move On
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bedroom_occupancy
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ state_attr(trigger.entity_id,''illuminance'') | float < 11
+      }}'
+  - condition: numeric_state
+    entity_id: sun.sun
+    attribute: elevation
+    below: -4.0
+  - condition: state
+    entity_id: light.bedroom_bed
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.bedroom_bed
+      brightness: 51
+      rgb_color:
+      - 255
+      - 117
+      - 71
+      effect: Solid
+      transition: 4
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.bedroom_move_light
+- id: bedroom_move_off
+  alias: Bedroom Move Off
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bedroom_occupancy
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.bedroom_move_light
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data:
+      entity_id: light.bedroom_bed
+      transition: 4
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.bedroom_move_light
+- id: prepare_bedroom
+  alias: Prepare Bedroom For Nice Sleep
+  trigger:
+  - platform: state
+    entity_id: sensor.stairs_direction
+    to: up
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 02:00:00
+  - condition: state
+    entity_id: media_player.bedroom_speaker
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.bedroom_evening_fired
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.bedroom_bed
+      brightness: 90
+      transition: 4
+      rgb_color:
+      - 255
+      - 36
+      - 200
+  - condition: state
+    entity_id: media_player.spotify_boguslaw_witkowski
+    state: idle
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.bedroom_speaker
+      volume_level: 0.12
+  - service: spotcast.start
+    data:
+      device_name: Bedroom speaker
+      uri: spotify:playlist:37i9dQZF1DXakrXW5YU9SI
+      random_song: true
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.bedroom_evening_fired
+- id: time_to_sleep
+  alias: Time To Sleep
+  trigger:
+    platform: state
+    entity_id: binary_sensor.p20pro_is_charging
+    to: 'on'
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 02:00:00
+  action:
+  - service: switch.turn_on
+    entity_id: switch.wled_nightlight
+  - service: script.change_volume_gradually
+    data:
+      entity_id: media_player.bedroom_speaker
+      minutes: 30
+      volume_start: 0.12
+      volume_end: 0.05
+  - service: media_player.turn_off
+    entity_id: media_pleyer.bedroom_speaker
+- id: enlighten_darken_down
+  alias: Englighten Darkre Down
+  trigger:
+  - platform: state
+    entity_id: sensor.ikeabutton01_action
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sensor.ikeabutton01_action
+        state: brightness_move_up
+      sequence:
+      - service: scene.turn_on
+        entity_id: scene.enlighten_down
+    - conditions:
+      - condition: state
+        entity_id: sensor.ikeabutton01_action
+        state: brightness_move_down
+      sequence:
+      - service: scene.turn_on
+        entity_id: scene.darken_down
+  mode: single
+- id: terrace_up_lights
+  alias: Terrace Up Lights
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_up
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.shelly_terrace_up
+        state: 'on'
+      sequence:
+      - service: script.turn_on
+        entity_id: script.terrace_on
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.shelly_terrace_up
+        state: 'off'
+      sequence:
+      - service: script.turn_on
+        entity_id: script.terrace_off
+  mode: single
+- id: wake_up
+  alias: Wake Up
+  description: Budzik
+  trigger:
+  - platform: time
+    at: '7:40'
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: script.wake_up_music
+    data: {}
+  mode: single
+- id: reset_evening_inputs
+  alias: Reset Evening Variables
+  trigger:
+  - platform: time
+    at: '4:00'
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.bedroom_evening_fired
+- id: '1614351122058'
+  alias: Living Room Side Light Toggle
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.livingroom_side_light_input
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.livingroom_side_light_input
+    to: 'off'
+  action:
+  - service: light.toggle
+    entity_id: light.tv_side
+  mode: single
+- id: '1614380763598'
+  alias: Lights Off at Night
+  description: ''
+  trigger:
+  - platform: time
+    at: '1:00'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.aquaramotion02_occupancy
+    state: 'off'
+    for: 00:10:00
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.downstairs_lights
+  mode: single
