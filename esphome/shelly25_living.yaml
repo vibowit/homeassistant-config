@@ -18,6 +18,7 @@ esphome:
 <<: !include common/common.yaml
 # Enable logging
 logger:
+  level: INFO
 
 
 i2c:
