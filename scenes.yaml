@@ -19,18 +19,6 @@
       friendly_name: Kitchen Upper
       supported_features: 0
       state: 'off'
-    light.tv:
-      friendly_name: TV
-      supported_features: 0
-      state: 'off'
-    light.tv_side:
-      friendly_name: TV Side
-      supported_features: 0
-      state: 'off'
-    light.stairs_christmas:
-      friendly_name: Stairs Christmas
-      supported_features: 0
-      state: 'off'
 - id: enlighten_down
   name: Enlighten Down
   entities:

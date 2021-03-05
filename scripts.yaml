@@ -18,13 +18,23 @@ moviemode_on:
     entity_id: scene.darken_down
   - service: media_player.media_stop
     entity_id: media_player.main_audio
+  - service: light.turn_off
+    data:
+      transition: 20
+    target:
+      entity_id: light.tv_side
+
 moviemode_off:
   alias: Movie Mode OFF
   sequence:
   - service: light.turn_on
-    entity_id:
-    - light.stairs
-    - light.tv_side
+    data:
+      transition: 20
+      brightness_pct: 75
+    target:
+      entity_id:
+      - light.stairs
+      - light.tv_side
   - service: switch.turn_off
     entity_id:
     - switch.denon
@@ -33,6 +43,7 @@ moviemode_off:
     - switch.denon
     - switch.audiolab_switch
   mode: single
+
 terrace_on:
   alias: Turn Terrace Lights On
   sequence:
