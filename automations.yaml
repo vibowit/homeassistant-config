@@ -485,3 +485,123 @@
     data: {}
     entity_id: light.downstairs_lights
   mode: single
+- id: '1614966339040'
+  alias: 'Light: Living Room Brightness Up Button'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 247eb9e582f3e489b6e66fb59d3f59af
+    type: action
+    subtype: brightness_up_click
+    discovery_id: 0x5c0272fffe3fb687 action_brightness_up_click
+  condition: []
+  action:
+  - type: brightness_increase
+    device_id: f84d973a74814b59e4144e5e3fdb84d0
+    entity_id: light.ikealed01
+    domain: light
+  - type: brightness_increase
+    device_id: 3975090f5b25421ea49146bba2a444d2
+    entity_id: light.ikealed02
+    domain: light
+  - type: brightness_increase
+    device_id: 21305e4ae29e998c4d4e41bd10459150
+    entity_id: light.ikealed03
+    domain: light
+  mode: single
+- id: '1614966568022'
+  alias: 'Light: Living Room Brightness Down Button'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 247eb9e582f3e489b6e66fb59d3f59af
+    type: action
+    subtype: brightness_down_click
+    discovery_id: 0x5c0272fffe3fb687 action_brightness_down_click
+  condition: []
+  action:
+  - type: brightness_decrease
+    device_id: f84d973a74814b59e4144e5e3fdb84d0
+    entity_id: light.ikealed01
+    domain: light
+  - type: brightness_decrease
+    device_id: 3975090f5b25421ea49146bba2a444d2
+    entity_id: light.ikealed02
+    domain: light
+  - type: brightness_decrease
+    device_id: 21305e4ae29e998c4d4e41bd10459150
+    entity_id: light.ikealed03
+    domain: light
+  mode: single
+- id: '1614966989339'
+  alias: 'Light: Living Room TV Toggle Button'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 247eb9e582f3e489b6e66fb59d3f59af
+    type: action
+    subtype: brightness_up_hold
+    discovery_id: 0x5c0272fffe3fb687 action_brightness_up_hold
+  condition: []
+  action:
+  - service: light.toggle
+    data:
+      brightness_pct: 100
+    target:
+      entity_id: light.livingroom_tv_light
+  mode: single
+- id: '1614967364519'
+  alias: 'Light: Living Room Side Toggle Button'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 247eb9e582f3e489b6e66fb59d3f59af
+    type: action
+    subtype: brightness_down_hold
+    discovery_id: 0x5c0272fffe3fb687 action_brightness_down_hold
+  condition: []
+  action:
+  - service: light.toggle
+    data:
+      transition: 30
+      brightness_pct: 75
+    target:
+      entity_id: light.tv_side
+  mode: single
+- id: '1614967489119'
+  alias: 'Audio: Audiolab Toggle'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 247eb9e582f3e489b6e66fb59d3f59af
+    type: action
+    subtype: arrow_left_click
+    discovery_id: 0x5c0272fffe3fb687 action_arrow_left_click
+  condition: []
+  action:
+  - type: toggle
+    device_id: 884dd46529d626a2df8ce0b2b465afad
+    entity_id: switch.audiolab_switch
+    domain: switch
+  mode: single
+- id: '1614967561505'
+  alias: 'Audio: Denon Toggle'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 247eb9e582f3e489b6e66fb59d3f59af
+    type: action
+    subtype: arrow_right_click
+    discovery_id: 0x5c0272fffe3fb687 action_arrow_right_click
+  condition: []
+  action:
+  - service: switch.toggle
+    target:
+      entity_id: switch.denon
+  mode: single
