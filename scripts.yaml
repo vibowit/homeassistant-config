@@ -109,15 +109,11 @@ spotify_livingroom_rock:
   - delay: 00:00:20
   - service: switch.turn_on
     entity_id: switch.audio_input
-  - service: spotcast.start
-    data:
-      uri: 'spotify:playlist:3qfitKDEZTfNqKEZNLW7mm'
-      device_name: Main Audio
-      random_song: true
   - service: script.spotify_playlist
     data:
       player_id: main_audio
       player_name: Main Audio
+      playlist: 'spotify:playlist:3qfitKDEZTfNqKEZNLW7mm'
       volume: 0.25
 
 spotify_playlist:
