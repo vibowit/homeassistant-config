@@ -16,6 +16,7 @@ dzieci:
     - person.wiktor_witkowski
     - person.zosia_witkowska
 
+# Test change
 # Bogus: device_tracker.bogus_phone, device_tracker.bogus_laptop
 # Luiza: device_tracker.galaxy_m51_lw
 # Zosia: device_tracker.zosia_huawei_y7, device_tracker.zosia_laptop
