@@ -88,7 +88,7 @@ spotify_livingroom_playlist:
   - service: switch.turn_on
     entity_id: switch.audiolab_switch
   - delay: 00:00:10
-  - service: switch:turn_on
+  - service: switch.turn_on
     entity_id: switch.audio_input
   - service: spotcast.start
     data:
