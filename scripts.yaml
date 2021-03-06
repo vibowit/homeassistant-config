@@ -92,9 +92,9 @@ spotify_livingroom_playlist:
     entity_id: switch.audio_input
   - service: spotcast.start
     data:
-      device_name: 'Main Audio'
-      random_song: true
       uri: 'spotify:playlist:3qfitKDEZTfNqKEZNLW7mm'
+      device_name: Main Audio
+      random_song: true
 
 spotify_evening:
   alias: Spotify Evening
