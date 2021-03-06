@@ -127,7 +127,7 @@ spotify_playlist:
   - service: spotcast.start
     data_template:
       uri: '{{ playlist }}'
-      device_name: {{ player_name }}
+      device_name: '{{ player_name }}'
       random_song: true
 
 spotify_evening:
