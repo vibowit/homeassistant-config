@@ -605,3 +605,16 @@
     target:
       entity_id: switch.denon
   mode: single
+- id: '1615032164426'
+  alias: 'Battery: Low battery level detection'
+  description: Send notification when low battery level detected
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      time: '10:00:00'
+      threshold: 15
+      actions:
+      - service: telegram_bot.send_message
+        data:
+          title: '*Battery Level*'
+          message: 'Low battery warning for: {{sensors|replace("_"," ")}} '
