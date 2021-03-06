@@ -126,7 +126,7 @@ spotify_playlist:
       volume_level: '{{ volume }}'
   - service: spotcast.start
     data_template:
-      uri: {{ playlist }}
+      uri: '{{ playlist }}'
       device_name: {{ player_name }}
       random_song: true
 
