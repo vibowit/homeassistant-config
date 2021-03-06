@@ -123,7 +123,7 @@ spotify_playlist:
   - service: media_player.volume_set
     data_template:
       entity_id: media_player.{{ player_id }}
-      volume_level: {{ volume }}
+      volume_level: {{ volume | float }}
   - service: spotcast.start
     data_template:
       uri: {{ playlist }}
