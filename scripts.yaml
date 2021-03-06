@@ -70,6 +70,7 @@ terrace_off:
       seconds: 1
   - entity_id: light.terrace_1
     service: light.turn_off
+
 bedroom_night_music:
   alias: Bedroom Night Music
   sequence:
@@ -78,6 +79,23 @@ bedroom_night_music:
       entity_id: media_player.bedroom_speaker
       volume_level: 0.1
   - delay: 00:00:02
+
+# Plays a specific playlist on Spotify in Living Room.
+spotify_livingroom_playlist:
+  alias: Spotify Play
+  description: 'Play Spotify Playlist in Living Room'
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.audiolab_switch
+  - delay: 00:00:10
+  - service: switch:turn_on
+    entity_id: switch.audio_input
+  - service: spotcast.start
+    data:
+      device_name: 'Main Audio'
+      random_song: true
+      uri: 'spotify:playlist:3qfitKDEZTfNqKEZNLW7mm'
+
 spotify_evening:
   alias: Spotify Evening
   sequence:
