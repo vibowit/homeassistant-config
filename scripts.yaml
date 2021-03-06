@@ -122,8 +122,8 @@ spotify_playlist:
   sequence:
   - service: media_player.volume_set
     data_template:
-      entity_id: media_player.{{ player_id }}
-      volume_level: {{ volume | float }}
+      entity_id: 'media_player.{{ player_id }}'
+      volume_level: '{{ volume }}'
   - service: spotcast.start
     data_template:
       uri: {{ playlist }}
