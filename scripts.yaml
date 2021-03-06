@@ -81,19 +81,57 @@ bedroom_night_music:
   - delay: 00:00:02
 
 # Plays a specific playlist on Spotify in Living Room.
-spotify_livingroom_playlist:
-  alias: Spotify Play
+spotify_livingroom_old:
+  alias: Spotify Living Room Play Old
   description: 'Play Spotify Playlist in Living Room'
   sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.main_audio
+      volume_level: 0.25
   - service: switch.turn_on
     entity_id: switch.audiolab_switch
-  - delay: 00:00:10
+  - delay: 00:00:20
   - service: switch.turn_on
     entity_id: switch.audio_input
   - service: spotcast.start
     data:
       uri: 'spotify:playlist:3qfitKDEZTfNqKEZNLW7mm'
       device_name: Main Audio
+      random_song: true
+
+spotify_livingroom_rock:
+  alias: Music Living Room Rock Playlist
+  description: 'Play Rock Playlist in Living Room'
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.audiolab_switch
+  - delay: 00:00:20
+  - service: switch.turn_on
+    entity_id: switch.audio_input
+  - service: spotcast.start
+    data:
+      uri: 'spotify:playlist:3qfitKDEZTfNqKEZNLW7mm'
+      device_name: Main Audio
+      random_song: true
+  - service: script.spotify_playlist
+    data:
+      player_id: main_audio
+      player_name: Main Audio
+      volume: 0.25
+
+spotify_playlist:
+  alias: Spotify Play
+  description: 'Play Spotify Playlist on selected player and volume'
+  sequence:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.{{ player_id }}
+      volume_level: {{ volume }}
+  - service: spotcast.start
+    data_template:
+      uri: {{ playlist }}
+      device_name: {{ player_name }}
       random_song: true
 
 spotify_evening:
