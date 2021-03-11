@@ -339,6 +339,8 @@ light:
     entities:
       - light.tv
       - light.tv_side
+      - light.ikeabulb01
+      - light.ikeabulb02
 
   - platform: group
     name: "TV Side"
@@ -368,6 +370,7 @@ light:
     name: Bedroom Lights
     entities:
       - light.bedroom_bed
+      - light.ikeabulb03
 
   - platform: group
     name: Upstairs Lights
