@@ -306,7 +306,7 @@
   description: Budzik
   trigger:
     - platform: time
-      at: "7:40"
+      at: "07:40:00"
   condition:
     - condition: time
       weekday:
@@ -323,7 +323,7 @@
   alias: Reset Evening Variables
   trigger:
     - platform: time
-      at: "4:00"
+      at: "04:00:00"
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.bedroom_evening_fired
@@ -561,8 +561,8 @@
         milliseconds: 0
   condition:
     - condition: time
-      before: "5:00"
-      after: "1:00"
+      before: "05:00:00"
+      after: "01:00:00"
   action:
     - service: light.turn_off
       target:
