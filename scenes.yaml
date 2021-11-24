@@ -131,3 +131,225 @@
 - id: '1613948985516'
   name: Bedroom Evening
   entities: {}
+- id: '1616338365204'
+  name: Movie Scene
+  entities:
+    switch.circadian_lighting_circadian_lighting:
+      hs_color:
+      - 26.341
+      - 32.157
+      brightness: 100
+      friendly_name: Circadian Lighting
+      icon: mdi:theme-light-dark
+      state: 'off'
+    light.ikeabulb01:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      brightness: 66
+      hs_color:
+      - 344.409
+      - 99.608
+      rgb_color:
+      - 255
+      - 0
+      - 67
+      xy_color:
+      - 0.663
+      - 0.282
+      color:
+        x: 0.667
+        y: 0.284
+      color_temp: 480
+      linkquality: 31
+      state: 'on'
+      update:
+        state: idle
+      update_available: false
+      friendly_name: IkeaBulb01
+      supported_features: 61
+    light.ikeabulb02:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      brightness: 253
+      color:
+        x: 0.404
+        y: 0.359
+      color_temp: 480
+      linkquality: 34
+      state: 'off'
+      update:
+        state: idle
+      update_available: false
+      friendly_name: IkeaBulb02
+      supported_features: 61
+    light.livingroom_leds:
+      friendly_name: Livingroom Leds
+      supported_features: 41
+      state: 'off'
+    light.livingroom_tv_light:
+      friendly_name: LivingRoom TV Light
+      supported_features: 8
+      state: 'off'
+    light.stairs:
+      friendly_name: Stairs
+      supported_features: 0
+      state: 'off'
+    light.kitchen_lights:
+      entity_id:
+      - light.kitchen_upper
+      - light.kitchen_table
+      - light.kitchen_cabinet
+      friendly_name: Kitchen Lights
+      icon: mdi:lightbulb-group
+      supported_features: 0
+      state: 'off'
+- id: '1616338736121'
+  name: EndMovie Scene
+  entities:
+    switch.circadian_lighting_circadian_lighting:
+      hs_color:
+      - 26.429
+      - 32.941
+      brightness: 100
+      friendly_name: Circadian Lighting
+      icon: mdi:theme-light-dark
+      state: 'on'
+    light.ikeabulb01:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      brightness: 253
+      hs_color:
+      - 26.429
+      - 32.941
+      rgb_color:
+      - 255
+      - 208
+      - 171
+      xy_color:
+      - 0.414
+      - 0.362
+      color:
+        x: 0.414
+        y: 0.362
+      color_temp: 480
+      linkquality: 34
+      state: 'on'
+      update:
+        state: idle
+      update_available: false
+      friendly_name: IkeaBulb01
+      supported_features: 61
+    light.ikeabulb02:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      brightness: 253
+      hs_color:
+      - 26.429
+      - 32.941
+      rgb_color:
+      - 255
+      - 208
+      - 171
+      xy_color:
+      - 0.414
+      - 0.362
+      color:
+        x: 0.414
+        y: 0.362
+      color_temp: 480
+      linkquality: 36
+      state: 'on'
+      update:
+        state: idle
+      update_available: false
+      friendly_name: IkeaBulb02
+      supported_features: 61
+    light.livingroom_leds:
+      brightness: 254
+      friendly_name: Livingroom Leds
+      supported_features: 41
+      state: 'on'
+- id: '1636411957642'
+  name: After Movie
+  entities:
+    light.livingroom_lamps:
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 150
+      hs_color:
+      - 15.688
+      - 85.49
+      rgb_color:
+      - 255
+      - 94
+      - 37
+      xy_color:
+      - 0.64
+      - 0.336
+      color_temp: 65
+      friendly_name: Livingroom Lamps
+      supported_features: 59
+      state: 'on'
+    light.livingroom_leds:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 87
+      friendly_name: Livingroom Leds
+      supported_features: 41
+      state: 'on'
+- id: '1636412067943'
+  name: New Movie Scene
+  entities:
+    light.livingroom_leds:
+      supported_color_modes:
+      - brightness
+      friendly_name: Livingroom Leds
+      supported_features: 41
+      state: 'off'
+    light.livingroom_lamps:
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 66
+      hs_color:
+      - 16.471
+      - 100
+      rgb_color:
+      - 255
+      - 70
+      - 0
+      xy_color:
+      - 0.672
+      - 0.324
+      color_temp: 393
+      friendly_name: Livingroom Lamps
+      supported_features: 59
+      state: 'on'

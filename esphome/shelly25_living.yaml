@@ -111,7 +111,7 @@ output:
 switch:
   - platform: gpio
     name: "LivingRoom Side Light Switch"
-    restore_mode: ALWAYS_ON
+    restore_mode: RESTORE_DEFAULT_ON
     pin: GPIO15
     id: shelly_25_relay_2
 

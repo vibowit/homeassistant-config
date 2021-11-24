@@ -1,620 +1,587 @@
-- id: move_light_on
+- id: light_move_on
   alias: Turn On Light - Motion
   description: Włącz światło gdy wykryjesz ruch
   trigger:
     platform: state
     entity_id:
-    - binary_sensor.hall_occupancy
-    - binary_sensor.garage_occupancy
-    to: 'on'
+      - binary_sensor.hall_occupancy
+      - binary_sensor.garage_occupancy
+    to: "on"
   condition:
     condition: or
     conditions:
-    - condition: numeric_state
-      entity_id: sun.sun
-      attribute: elevation
-      below: 4
-    - condition: template
-      value_template: '{{ state_attr(trigger.entity_id,''illuminance'') | float <
-        20 }}
-
-        '
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        below: 4
+      - condition: template
+        value_template: "{{ state_attr(trigger.entity_id,'illuminance') | float <20 }}"
   action:
-  - service: light.turn_on
-    data_template:
-      entity_id: 'light.{{ trigger.entity_id.split(''.'')[1].split(''_'')[0] }}
+    - service: light.turn_on
+      data_template:
+        entity_id: "light.{{ trigger.entity_id.split('.')[1].split('_')[0] }}"
 
-        '
-- id: no_move_light_off
+- id: light_no_move_off
   alias: Turn Off Light - No Motion
   trigger:
     platform: state
     entity_id:
-    - binary_sensor.hall_occupancy
-    - binary_sensor.garage_occupancy
-    to: 'off'
+      - binary_sensor.hall_occupancy
+      - binary_sensor.garage_occupancy
+    to: "off"
     for: 00:00:30
   action:
-  - service: light.turn_off
-    data_template:
-      entity_id: 'light.{{ trigger.entity_id.split(''.'')[1].split(''_'')[0] }}
+    - service: light.turn_off
+      data_template:
+        entity_id: "light.{{ trigger.entity_id.split('.')[1].split('_')[0] }}"
 
-        '
-- alias: Notify Me - Garage Move
-  trigger:
-  - entity_id: binary_sensor.garage_occupancy
-    platform: state
-    to: 'on'
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: group.family
-      state: not_home
-    - condition: template
-      value_template: '{{ (now()-states.automation.wylacz_swiatlo_garaz_bezruch.attributes.last_triggered).seconds
-        > 600 }}'
-    - condition: template
-      value_template: '{{ (now()-states.automation.notify_me_garage_move.attributes.last_triggered).seconds
-        > 600 }}'
-  action:
-  - service: telegram_bot.send_message
-    data:
-      message: Presence Detected while nobody is home
-      title: Your Garage Pir Friend
-  - entity_id: light.kitchen_upper
-    service: light.turn_on
-  initial_state: true
-  id: 3505342ab01542f19d6a1531c0a6e4f6
 - id: rainy_day
   alias: Rainy Day
   trigger:
-  - platform: state
-    entity_id: weather.home
+    - platform: state
+      entity_id: weather.home
   condition:
-  - condition: template
-    value_template: '{{ trigger.to_state.state in ["rainy", "cloudy", "snowy", "snowy,rainy"]
-      }}'
-  - condition: state
-    entity_id: group.family
-    state: home
-  - condition: time
-    after: '14:00'
-    before: '23:00'
+    - condition: template
+      value_template:
+        '{{ trigger.to_state.state in ["rainy", "cloudy", "snowy", "snowy,rainy"]
+        }}'
+    - condition: state
+      entity_id: group.family
+      state: home
+    - condition: time
+      after: "14:00"
+      before: "23:00"
   action:
     service: light.turn_on
     entity_id: light.kitchen_upper
-- id: nobody_home_lights_off
-  alias: Nobody Home Lights Off
+
+- alias: Nobody Home Lights Off
+  id: nobody_home_lights_off
   description: Turn Off Lights When Nobody is Home
-  initial_state: 'true'
+  initial_state: true
   trigger:
-  - platform: state
-    entity_id: group.family
-    to: not_home
-    for:
-      seconds: 60
+    - platform: state
+      entity_id: group.family
+      to: not_home
+      for:
+        seconds: 60
   action:
-  - service: light.turn_off
-    entity_id: light.inside_lights
-  - service: telegram_bot.send_message
-    data:
-      message: Wyłączam światła
-      title: Wszyscy wyszli
+    - service: light.turn_off
+      entity_id: light.inside_lights
+    - service: telegram_bot.send_message
+      data:
+        message: Wyłączam światła
+        title: Wszyscy wyszli
+
 - id: stairs_lights_on
   alias: Turn On Stairs Lights
   description: Włącz światło, żeby Luiza się nie potykała
   trigger:
-    entity_id:
-    - binary_sensor.aquaramotion01_occupancy
-    - binary_sensor.aquaramotion02_occupancy
-    platform: state
-    to: 'on'
+    - entity_id:
+        - binary_sensor.aquaramotion01_occupancy
+        - binary_sensor.aquaramotion02_occupancy
+      platform: state
+      to: "on"
   condition:
-  - below: 9
-    condition: numeric_state
-    entity_id: sensor.aquaramotion01_illuminance
+    - below: "9"
+      condition: numeric_state
+      entity_id: sensor.aquaramotion01_illuminance
   action:
-  - service: light.turn_on
-    entity_id: light.stairs
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.stairs_switch_auto_on
+    - service: light.turn_on
+      target:
+        entity_id: light.stairs_light
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.stairs_switch_auto_on
+  mode: single
+
 - id: stairs_lights_off
   alias: Turn Off Stairs Lights
   description: Wyłącz światło na schodach po 3 minutach
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.aquaramotion01_occupancy
-    - binary_sensor.aquaramotion02_occupancy
-    to: 'off'
-    for:
-      minutes: 3
+    - platform: state
+      entity_id:
+        - binary_sensor.aquaramotion01_occupancy
+        - binary_sensor.aquaramotion02_occupancy
+      to: "off"
+      for: 0:03:00
   condition:
-  - condition: state
-    entity_id: input_boolean.stairs_switch_auto_on
-    state: 'on'
-  - condition: state
-    entity_id: light.stairs
-    state: 'on'
+    - condition: state
+      entity_id: input_boolean.stairs_switch_auto_on
+      state: "on"
+    - condition: state
+      entity_id: light.stairs_light
+      state: "on"
   action:
-  - service: light.turn_off
-    entity_id: light.stairs
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.stairs_light
+  mode: single
+
 - id: stairs_light_off_manually
   alias: Stairs Light Turned Off Manually
   trigger:
-  - platform: state
-    entity_id: light.stairs
-    to: 'off'
+    - platform: state
+      entity_id: light.stairs_light
+      to: "off"
   condition:
-  - condition: state
-    entity_id: input_boolean.stairs_switch_auto_on
-    state: 'on'
+    - condition: state
+      entity_id: input_boolean.stairs_switch_auto_on
+      state: "on"
   action:
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.stairs_switch_auto_on
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.stairs_switch_auto_on
+  mode: single
+
 - id: music_morning
   alias: Morning Music
   trigger:
-  - entity_id: sensor.stairs_direction
-    platform: state
-    to: down
+    - entity_id: sensor.stairs_direction
+      platform: state
+      to: down
   condition:
-  - condition: and
-    conditions:
-    - after: 07:00:00
-      before: '11:00:00'
-      condition: time
-    - condition: template
-      value_template: '{{ not is_state(''media_player.main_audio'', ''playing'') }}'
+    - condition: and
+      conditions:
+        - after: 07:00:00
+          before: "11:00:00"
+          condition: time
+        - condition: template
+          value_template: "{{ not is_state('media_player.main_audio', 'playing') }}"
   action:
-  - entity_id: script.spotify_morning
-    service: script.turn_on
-- id: maly_in_da_house
-  alias: Maly Dotarl
-  trigger:
-  - platform: state
-    entity_id: group.maly
-    to: home
-  condition:
-  - condition: state
-    entity_id: light.kitchen_upper
-    state: 'on'
-  action:
-  - entity_id: light.kitchen_upper
-    service: light.turn_off
-  - entity_id: light.kitchen_table
-    service: light.turn_on
+    - entity_id: script.spotify_morning
+      service: script.turn_on
+
 - id: music_evening
   alias: Evening Music
   trigger:
-  - platform: state
-    entity_id: group.rodzice
-    to: home
+    - platform: state
+      entity_id: group.rodzice
+      to: home
   condition:
     condition: and
     conditions:
-    - after: '16:00:00'
-      before: '22:00:00'
-      condition: time
-    - condition: template
-      value_template: '{{ not is_state(''media_player.main_audio'', ''playing'') }}'
+      - after: "16:00:00"
+        before: "22:00:00"
+        condition: time
+      - condition: template
+        value_template: "{{ not is_state('media_player.main_audio', 'playing') }}"
   action:
     service: script.turn_on
     entity_id: script.spotify_evening
+
 - id: movie_mode_button
   alias: Movie Mode Button
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.blue_button
-    - sensor.ikeabutton04_action
-    to:
-    - 'on'
-    - toggle
+    - platform: state
+      entity_id:
+        - binary_sensor.blue_button
+        - sensor.ikeabutton04_battery
+      to: on,toggle
   action:
-    service: switch.toggle
-    entity_id: switch.movie_mode
+    - service: switch.toggle
+      entity_id: switch.movie_mode
+    - scene: scene.movie_scene_2
+  mode: single
+
 - id: turn_on_porch
   alias: Turn On Porch Light
   description: Turn on porch light when the sun is set
   trigger:
-  - platform: state
-    entity_id: sun.sun
-    to: below_horizon
+    - platform: state
+      entity_id: sun.sun
+      to: below_horizon
   action:
-  - entity_id: light.porch
-    service: light.turn_on
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.porch_light
+  mode: single
+
 - id: turn_off_porch
   alias: Turn Off Porch Light
   description: Turn off porch light when the sun rises
   trigger:
-  - platform: state
-    entity_id: sun.sun
-    to: above_horizon
+    - platform: state
+      entity_id: sun.sun
+      to: above_horizon
   action:
-  - entity_id: light.porch
-    service: light.turn_off
-- id: zosia_guzik
-  alias: Zosia Guzik
-  trigger:
-  - platform: state
-    entity_id: sensor.ikeabutton01_action
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: sensor.ikeabutton01_action
-        state: 'on'
-      sequence:
-      - service: light.turn_on
-        entity_id: light.zosia_wall
-    - conditions:
-      - condition: state
-        entity_id: sensor.ikeabutton01_action
-        state: 'off'
-      sequence:
-      - service: light.turn_off
-        entity_id: light.zosia_wall
-- id: bedroom_button
-  alias: Bedroom Button
-  trigger:
-  - platform: state
-    entity_id: sensor.ikeabutton02_action
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: sensor.ikeabutton02_action
-        state: 'on'
-      sequence:
-      - service: light.turn_on
-        entity_id: light.bedroom_bed
-    - conditions:
-      - condition: state
-        entity_id: sensor.ikeabutton02_action
-        state: 'off'
-      sequence:
-      - service: light.turn_off
-        entity_id: light.bedroom_bed
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+          - light.porch_light
+  mode: single
+
 - id: bedroom_move_on
   alias: Bedroom Move On
   trigger:
-  - platform: state
-    entity_id: binary_sensor.bedroom_occupancy
-    to: 'on'
+    - platform: state
+      entity_id: binary_sensor.bedroom_occupancy
+      to: "on"
   condition:
-  - condition: template
-    value_template: '{{ state_attr(trigger.entity_id,''illuminance'') | float < 11
-      }}'
-  - condition: numeric_state
-    entity_id: sun.sun
-    attribute: elevation
-    below: -4.0
-  - condition: state
-    entity_id: light.bedroom_bed
-    state: 'off'
-  action:
-  - service: light.turn_on
-    data:
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id,'illuminance') | float < 11 }}"
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -4.0
+    - condition: state
       entity_id: light.bedroom_bed
-      brightness: 51
-      rgb_color:
-      - 255
-      - 117
-      - 71
-      effect: Solid
-      transition: 4
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.bedroom_move_light
+      state: "off"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.bedroom_bed
+        brightness: 51
+        rgb_color:
+          - 255
+          - 117
+          - 71
+        effect: Solid
+        transition: 4
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.bedroom_move_light
+
 - id: bedroom_move_off
   alias: Bedroom Move Off
   trigger:
-  - platform: state
-    entity_id: binary_sensor.bedroom_occupancy
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.bedroom_occupancy
+      to: "off"
   condition:
-  - condition: state
-    entity_id: input_boolean.bedroom_move_light
-    state: 'on'
+    - condition: state
+      entity_id: input_boolean.bedroom_move_light
+      state: "on"
   action:
-  - service: light.turn_off
-    data:
-      entity_id: light.bedroom_bed
-      transition: 4
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.bedroom_move_light
+    - service: light.turn_off
+      data:
+        entity_id: light.bedroom_bed
+        transition: 4
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.bedroom_move_light
+
 - id: prepare_bedroom
   alias: Prepare Bedroom For Nice Sleep
   trigger:
-  - platform: state
-    entity_id: sensor.stairs_direction
-    to: up
+    - platform: state
+      entity_id: sensor.stairs_direction
+      to: up
   condition:
-  - condition: time
-    after: '22:00:00'
-    before: 02:00:00
-  - condition: state
-    entity_id: media_player.bedroom_speaker
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.bedroom_evening_fired
-    state: 'off'
-  action:
-  - service: light.turn_on
-    data:
-      entity_id: light.bedroom_bed
-      brightness: 90
-      transition: 4
-      rgb_color:
-      - 255
-      - 36
-      - 200
-  - condition: state
-    entity_id: media_player.spotify_boguslaw_witkowski
-    state: idle
-  - service: media_player.volume_set
-    data:
+    - condition: time
+      after: "22:00:00"
+      before: 02:00:00
+    - condition: state
       entity_id: media_player.bedroom_speaker
-      volume_level: 0.12
-  - service: spotcast.start
-    data:
-      device_name: Bedroom speaker
-      uri: spotify:playlist:37i9dQZF1DXakrXW5YU9SI
-      random_song: true
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.bedroom_evening_fired
-- id: time_to_sleep
-  alias: Time To Sleep
-  trigger:
-    platform: state
-    entity_id: binary_sensor.p20pro_is_charging
-    to: 'on'
-  condition:
-  - condition: time
-    after: '22:00:00'
-    before: 02:00:00
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.bedroom_evening_fired
+      state: "off"
   action:
-  - service: switch.turn_on
-    entity_id: switch.wled_nightlight
-  - service: script.change_volume_gradually
-    data:
-      entity_id: media_player.bedroom_speaker
-      minutes: 30
-      volume_start: 0.12
-      volume_end: 0.05
-  - service: media_player.turn_off
-    entity_id: media_pleyer.bedroom_speaker
-- id: enlighten_darken_down
-  alias: Englighten Darkre Down
-  trigger:
-  - platform: state
-    entity_id: sensor.ikeabutton01_action
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: sensor.ikeabutton01_action
-        state: brightness_move_up
-      sequence:
-      - service: scene.turn_on
-        entity_id: scene.enlighten_down
-    - conditions:
-      - condition: state
-        entity_id: sensor.ikeabutton01_action
-        state: brightness_move_down
-      sequence:
-      - service: scene.turn_on
-        entity_id: scene.darken_down
-  mode: single
-- id: terrace_up_lights
-  alias: Terrace Up Lights
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.shelly_terrace_up
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: binary_sensor.shelly_terrace_up
-        state: 'on'
-      sequence:
-      - service: script.turn_on
-        entity_id: script.terrace_on
-    - conditions:
-      - condition: state
-        entity_id: binary_sensor.shelly_terrace_up
-        state: 'off'
-      sequence:
-      - service: script.turn_on
-        entity_id: script.terrace_off
-  mode: single
+    - service: light.turn_on
+      data:
+        entity_id: light.bedroom_bed
+        brightness: 90
+        transition: 4
+        rgb_color:
+          - 255
+          - 36
+          - 200
+    - condition: state
+      entity_id: media_player.spotify_boguslaw_witkowski
+      state: idle
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.bedroom_speaker
+        volume_level: 0.12
+    - service: spotcast.start
+      data:
+        device_name: Bedroom speaker
+        uri: spotify:playlist:37i9dQZF1DXakrXW5YU9SI
+        random_song: true
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.bedroom_evening_fired
+
 - id: wake_up
   alias: Wake Up
   description: Budzik
   trigger:
-  - platform: time
-    at: '7:40'
+    - platform: time
+      at: "7:40"
   condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
   action:
-  - service: script.wake_up_music
-    data: {}
+    - service: script.wake_up_music
+      data: {}
   mode: single
 - id: reset_evening_inputs
   alias: Reset Evening Variables
   trigger:
-  - platform: time
-    at: '4:00'
+    - platform: time
+      at: "4:00"
   action:
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.bedroom_evening_fired
-- id: '1614351122058'
-  alias: Living Room Side Light Toggle
-  description: ''
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.bedroom_evening_fired
+- id: "1614351122058"
+  alias: "Light: Living Room Side Button Light On"
+  description: ""
   trigger:
-  - platform: state
-    entity_id: binary_sensor.livingroom_side_light_input
-    to: 'on'
-  - platform: state
-    entity_id: binary_sensor.livingroom_side_light_input
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.livingroom_side_light_input
+      to: "on"
   action:
-  - service: light.toggle
-    entity_id: light.tv_side
+    - service: light.turn_on
+      target:
+        entity_id: light.livingroom_leds
+      data:
+        transition: 5
   mode: single
-- id: '1614380763598'
+- id: "1614380763598"
   alias: Lights Off at Night
-  description: ''
+  description: ""
   trigger:
-  - platform: time
-    at: '1:00'
+    - platform: time
+      at: 01:00:00
   condition:
-  - condition: state
-    entity_id: binary_sensor.aquaramotion02_occupancy
-    state: 'off'
-    for: 00:10:00
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: media_player.shield_2
+          state: playing
+        - condition: and
+          conditions:
+            - condition: not
+              conditions:
+                - condition: state
+                  entity_id: media_player.livingroon
+                  state: playing
   action:
-  - service: light.turn_off
-    data: {}
-    entity_id: light.downstairs_lights
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+          - light.downstairs_lights
+          - light.living_room_lights
   mode: single
-- id: '1614966339040'
-  alias: 'Light: Living Room Brightness Up Button'
-  description: ''
+- id: "1614966339040"
+  alias: "Light: Living Room Brightness Up Button"
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_up_click
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_up_click
+    - platform: device
+      domain: mqtt
+      device_id: 247eb9e582f3e489b6e66fb59d3f59af
+      type: action
+      subtype: brightness_up_click
+      discovery_id: 0x5c0272fffe3fb687 action_brightness_up_click
   condition: []
   action:
-  - type: brightness_increase
-    device_id: f84d973a74814b59e4144e5e3fdb84d0
-    entity_id: light.ikealed01
-    domain: light
-  - type: brightness_increase
-    device_id: 3975090f5b25421ea49146bba2a444d2
-    entity_id: light.ikealed02
-    domain: light
-  - type: brightness_increase
-    device_id: 21305e4ae29e998c4d4e41bd10459150
-    entity_id: light.ikealed03
-    domain: light
+    - type: brightness_increase
+      device_id: f84d973a74814b59e4144e5e3fdb84d0
+      entity_id: light.ikealed01
+      domain: light
+    - type: brightness_increase
+      device_id: 3975090f5b25421ea49146bba2a444d2
+      entity_id: light.ikealed02
+      domain: light
+    - type: brightness_increase
+      device_id: 21305e4ae29e998c4d4e41bd10459150
+      entity_id: light.ikealed03
+      domain: light
   mode: single
-- id: '1614966568022'
-  alias: 'Light: Living Room Brightness Down Button'
-  description: ''
+- id: "1614966568022"
+  alias: "Light: Living Room Brightness Down Button"
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_down_click
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_down_click
+    - platform: device
+      domain: mqtt
+      device_id: 247eb9e582f3e489b6e66fb59d3f59af
+      type: action
+      subtype: brightness_down_click
+      discovery_id: 0x5c0272fffe3fb687 action_brightness_down_click
   condition: []
   action:
-  - type: brightness_decrease
-    device_id: f84d973a74814b59e4144e5e3fdb84d0
-    entity_id: light.ikealed01
-    domain: light
-  - type: brightness_decrease
-    device_id: 3975090f5b25421ea49146bba2a444d2
-    entity_id: light.ikealed02
-    domain: light
-  - type: brightness_decrease
-    device_id: 21305e4ae29e998c4d4e41bd10459150
-    entity_id: light.ikealed03
-    domain: light
+    - type: brightness_decrease
+      device_id: f84d973a74814b59e4144e5e3fdb84d0
+      entity_id: light.ikealed01
+      domain: light
+    - type: brightness_decrease
+      device_id: 3975090f5b25421ea49146bba2a444d2
+      entity_id: light.ikealed02
+      domain: light
+    - type: brightness_decrease
+      device_id: 21305e4ae29e998c4d4e41bd10459150
+      entity_id: light.ikealed03
+      domain: light
   mode: single
-- id: '1614966989339'
-  alias: 'Light: Living Room TV Toggle Button'
-  description: ''
+- id: "1614966989339"
+  alias: "Light: Living Room TV Toggle Button"
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_up_hold
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_up_hold
+    - platform: device
+      domain: mqtt
+      device_id: 247eb9e582f3e489b6e66fb59d3f59af
+      type: action
+      subtype: brightness_up_hold
+      discovery_id: 0x5c0272fffe3fb687 action_brightness_up_hold
   condition: []
   action:
-  - service: light.toggle
-    data:
-      brightness_pct: 100
-    target:
-      entity_id: light.livingroom_tv_light
+    - service: light.toggle
+      data:
+        brightness_pct: 100
+      target:
+        entity_id: light.livingroom_tv_light
   mode: single
-- id: '1614967364519'
-  alias: 'Light: Living Room Side Toggle Button'
-  description: ''
+- id: "1614967364519"
+  alias: "Light: Living Room Side Toggle Button"
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_down_hold
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_down_hold
+    - platform: device
+      domain: mqtt
+      device_id: 247eb9e582f3e489b6e66fb59d3f59af
+      type: action
+      subtype: brightness_down_hold
+      discovery_id: 0x5c0272fffe3fb687 action_brightness_down_hold
   condition: []
   action:
-  - service: light.toggle
-    data:
-      transition: 30
-      brightness_pct: 75
-    target:
-      entity_id: light.tv_side
+    - service: light.toggle
+      data:
+        transition: 30
+        brightness_pct: 75
+      target:
+        entity_id: light.tv_side
   mode: single
-- id: '1614967489119'
-  alias: 'Audio: Audiolab Toggle'
-  description: ''
+- id: "1614967489119"
+  alias: "Audio: Audiolab Toggle"
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: arrow_left_click
-    discovery_id: 0x5c0272fffe3fb687 action_arrow_left_click
+    - platform: device
+      domain: mqtt
+      device_id: 247eb9e582f3e489b6e66fb59d3f59af
+      type: action
+      subtype: arrow_left_click
+      discovery_id: 0x5c0272fffe3fb687 action_arrow_left_click
   condition: []
   action:
-  - type: toggle
-    device_id: 884dd46529d626a2df8ce0b2b465afad
-    entity_id: switch.audiolab_switch
-    domain: switch
+    - type: toggle
+      device_id: 884dd46529d626a2df8ce0b2b465afad
+      entity_id: switch.audiolab_switch
+      domain: switch
   mode: single
-- id: '1614967561505'
-  alias: 'Audio: Denon Toggle'
-  description: ''
+- id: "1614967561505"
+  alias: "Audio: Denon Toggle"
+  description: ""
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: arrow_right_click
-    discovery_id: 0x5c0272fffe3fb687 action_arrow_right_click
+    - platform: device
+      domain: mqtt
+      device_id: 247eb9e582f3e489b6e66fb59d3f59af
+      type: action
+      subtype: arrow_right_click
+      discovery_id: 0x5c0272fffe3fb687 action_arrow_right_click
   condition: []
   action:
-  - service: switch.toggle
-    target:
-      entity_id: switch.denon
+    - service: switch.toggle
+      target:
+        entity_id: switch.denon
   mode: single
-- id: '1615032164426'
-  alias: 'Battery: Low battery level detection'
+- id: "1615032164426"
+  alias: "Battery: Low battery level detection"
   description: Send notification when low battery level detected
   use_blueprint:
     path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
     input:
-      time: '10:00:00'
+      time: "10:00:00"
       threshold: 15
       actions:
-      - service: telegram_bot.send_message
-        data:
-          title: '*Battery Level*'
-          message: 'Low battery warning for: {{sensors|replace("_"," ")}} '
+        - service: telegram_bot.send_message
+          data:
+            title: "*Battery Level*"
+            message: 'Low battery warning for: {{sensors|replace("_"," ")}} '
+- id: "1615592016690"
+  alias: "Light: Wiktor Lamp Button On"
+  description: ""
+  trigger:
+    - platform: device
+      domain: mqtt
+      device_id: 0c2d5f8d232eccbf674d7739e81d8338
+      type: action
+      subtype: "on"
+      discovery_id: 0x842e14fffe78da8d action_on
+  condition: []
+  action:
+    - type: turn_on
+      device_id: a2d540b2c0de785b1753cb67eaec9225
+      entity_id: switch.ikeaplug03
+      domain: switch
+  mode: single
+- id: "1615592064653"
+  alias: "Light: Wiktor Lamp Button Off"
+  description: ""
+  trigger:
+    - platform: device
+      domain: mqtt
+      device_id: 0c2d5f8d232eccbf674d7739e81d8338
+      type: action
+      subtype: "off"
+      discovery_id: 0x842e14fffe78da8d action_off
+  condition: []
+  action:
+    - type: turn_off
+      device_id: a2d540b2c0de785b1753cb67eaec9225
+      entity_id: switch.ikeaplug03
+      domain: switch
+  mode: single
+- id: "1615592855740"
+  alias: "Lights: Turn off at night"
+  description: ""
+  trigger:
+    - type: no_motion
+      platform: device
+      device_id: ffbe509404e1f8e04819dcd98bb08980
+      entity_id: binary_sensor.aquaramotion02_occupancy
+      domain: binary_sensor
+      for:
+        hours: 0
+        minutes: 30
+        seconds: 0
+        milliseconds: 0
+    - type: no_motion
+      platform: device
+      device_id: ffbe509404e1f8e04819dcd98bb08980
+      entity_id: binary_sensor.aquaramotion02_occupancy
+      domain: binary_sensor
+      for:
+        hours: 0
+        minutes: 30
+        seconds: 0
+        milliseconds: 0
+  condition:
+    - condition: time
+      before: "5:00"
+      after: "1:00"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.inside_lights
+      data:
+        transition: 120
+  mode: single
+- id: "1618763983363"
+  alias: "Light: Living Room Side Button Light Off"
+  description: ""
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.livingroom_side_light_input
+      to: "off"
+  condition: []
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.livingroom_leds
+      data:
+        transition: 5
+  mode: single

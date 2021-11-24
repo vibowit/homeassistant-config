@@ -17,10 +17,10 @@ frontend:
   themes: !include_dir_merge_named themes
 
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-http:
-  # base_url: hass.witkowski.ovh
-  use_x_forwarded_for: true
-  trusted_proxies: 10.0.0.1
+# http:
+#   # base_url: hass.witkowski.ovh
+#   use_x_forwarded_for: true
+#   trusted_proxies: 10.0.0.1
 
 api:
 
@@ -38,19 +38,19 @@ recorder:
 #  exclude:
 #    entities:
 #      - binary_sensor.wiktor_motion_sensor
-    #   - sensor.aquaratemp01_temperature
-    #   - sensor.aquaratemp01_humidity
-    #   - sensor.aquaratemp01_pressure
+#   - sensor.aquaratemp01_temperature
+#   - sensor.aquaratemp01_humidity
+#   - sensor.aquaratemp01_pressure
 
-mqtt:
-  discovery: true
-  broker: 192.168.0.5
-  birth_message:
-    topic: "hass/status"
-    payload: "online"
-  will_message:
-    topic: "hass/status"
-    payload: "offline"
+#mqtt:
+#  discovery: true
+#  broker: 192.168.0.5
+#  birth_message:
+#    topic: "hass/status"
+#    payload: "online"
+#  will_message:
+#    topic: "hass/status"
+#    payload: "offline"
 
 media_player:
   # Use the Python ADB implementation
@@ -117,11 +117,12 @@ notify:
 
 spotify:
   client_id: !secret hass_spotify_client_id
-  client_secret: !secret hass_spotify_client_secret
+  client_secret:
+    !secret hass_spotify_client_secret
 
-spotcast:
-  sp_dc: !secret sp_dc
-  sp_key: !secret sp_key
+    #spotcast:
+    #sp_dc: !secret sp_dc
+    # sp_key: !secret sp_key
 
 # climate:
 #   - platform: climate_ip
@@ -140,7 +141,13 @@ spotcast:
 input_select: !include input_select.yaml
 input_boolean: !include input_boolean.yaml
 input_datetime: !include input_datetime.yaml
-
+input_number:
+  brightness_level:
+    name: Brightness Level
+    initial: 255
+    min: 0
+    max: 255
+    step: 1
 
 # influxdb:
 #   host: 192.168.0.5
@@ -159,17 +166,6 @@ input_datetime: !include input_datetime.yaml
 
 switch:
   - platform: mqtt
-    name: "Kitchen Light 01"
-    state_topic: "stat/sw_kitchen_01/POWER"
-    command_topic: "cmnd/sw_kitchen_01/POWER"
-    availability_topic: "tele/sw_kitchen_01/LWT"
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-
-  - platform: mqtt
     name: Shelly Terrace Down
     state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0"
     command_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/command"
@@ -186,22 +182,6 @@ switch:
     retain: false
 
   - platform: mqtt
-    name: Shelly TV
-    state_topic: "shellies/shellyswitch25-8CAAB5059118/relay/0"
-    command_topic: "shellies/shellyswitch25-8CAAB5059118/relay/0/command"
-    payload_on: "on"
-    payload_off: "off"
-    retain: false
-
-  - platform: mqtt
-    name: Shelly TV Side
-    state_topic: "shellies/shellyswitch25-8CAAB5059118/relay/1"
-    command_topic: "shellies/shellyswitch25-8CAAB5059118/relay/1/command"
-    payload_on: "on"
-    payload_off: "off"
-    retain: false
-
-  - platform: mqtt
     name: "Screen"
     state_topic: "stat/RFBridge1/RfCode"
     command_topic: "cmnd/RFBridge1/Backlog"
@@ -210,28 +190,6 @@ switch:
     payload_not_available: "Offline"
     payload_on: "RfRaw AAB04D0508026C014A00C8008C10FEC081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A081A08181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A081A0A0A0A0818181818181A081B0A055;RfRaw 0"
     payload_off: "RfRaw AAB04B04080276014000D210D6B081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A090A0A0A0A0A081908181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A0A0A0A081A0818181A081818181A0A055; RfRaw 0"
-    optimistic: true
-
-  - platform: mqtt
-    name: "Gate"
-    state_topic: "rf_bridge/stat/RfCode"
-    command_topic: "rf_bridge/cmnd/Backlog"
-    availability_topic: "tele/rf_bridge/LWT"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    payload_on: "RfRaw AAB05A050401D601400F64033E413C4818181808080808080808082B08383B083B0B0B0B083B0B083B083838383B0B0B0B08383B08383B0B083B0B08383B0B08383B0B083B0B0B0B083B083B0B0B08383838383B083B0B0B083B0B0B0B55;RfRaw 0"
-    payload_off: "RfRaw AAB05A050401D601400F64033E413C4818181808080808080808082B08383B083B0B0B0B083B0B083B083838383B0B0B0B08383B08383B0B083B0B08383B0B08383B0B083B0B0B0B083B083B0B0B08383838383B083B0B0B083B0B0B0B55;RfRaw 0"
-    optimistic: true
-
-  - platform: mqtt
-    name: "Garage Door"
-    state_topic: "rf_bridge/stat/RfCode"
-    command_topic: "rf_bridge/cmnd/Backlog"
-    availability_topic: "tele/rf_bridge/LWT"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    payload_on: "RfRaw AAB05A050401CC014A0F6402EE4150481818080808080808080808283B0838383B083B083B0838383B0B083B0838383B0B083B083B0B08383B083B08383B0B08383B0B083B0B0B0B083B083B0B0B08383838383B083B0B0B0B083B0B0B55;RfRaw 0"
-    payload_off: "RfRaw AAB05A050401D601400F6E02EE4146481818180808080808080808283B083B083B08383B0B0B0B0B0B083B08383B0B0B083838383B0B08383B0B0B08383B0B08383B0B083B0B0B0B083B083B0B0B08383838383B083B0B0B0B083B0B0B55;RfRaw 0"
     optimistic: true
 
   - platform: broadlink
@@ -338,16 +296,8 @@ light:
     name: Living Room Lights
     entities:
       - light.tv
-      - light.tv_side
-      - light.ikeabulb01
-      - light.ikeabulb02
-
-  - platform: group
-    name: "TV Side"
-    entities:
-      - light.ikealed01
-      - light.ikealed02
-      - light.ikealed03
+      - light.livingroom_leds
+      - light.livingroom_lamps
 
   - platform: group
     name: Downstairs Lights
@@ -409,10 +359,6 @@ light:
     entity_id: switch.mini03
 
   - platform: switch
-    name: "Hall"
-    entity_id: switch.mini06
-
-  - platform: switch
     name: "Wiktor"
     entity_id: switch.mini02
 
@@ -448,6 +394,22 @@ light:
     name: "Stairs Christmas"
     entity_id: switch.ikeaplug03
 
+  - platform: mqtt
+    schema: json
+    name: Livingroom Leds
+    command_topic: "zigbee2mqtt/LivingroomLeds/set"
+    state_topic: "zigbee2mqtt/LivingroomLeds"
+    brightness: true
+
+  - platform: mqtt
+    schema: json
+    name: Livingroom Lamps
+    command_topic: "zigbee2mqtt/LivingroomLamps/set"
+    state_topic: "zigbee2mqtt/LivingroomLamps"
+    color_temp: true
+    brightness: true
+    rgb: true
+
 # ecovacs:
 #   username: vibowit@gmail.com
 #   password: !secret deebot_pass
@@ -459,8 +421,11 @@ light:
 #   password: !secret deebot_password
 #   country: !secret deebot_coutry
 #   continent: !secret deebot_continent
-#   deviceid: !secret deebot_id
-#   live_map: false
+# deviceid:
+#   - !secret deebot_id
+# live_map: false
+
+# circadian_lighting:
 
 weather:
   - platform: darksky

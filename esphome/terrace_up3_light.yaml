@@ -1,9 +1,7 @@
 ---
 substitutions:
-  device: livingroom_audio_switches
-  name: "Living Room Audio Switches"
-  # Name for the relays
-  channel_1: "Audiolab Switch"
+  device: terrace_up3_light
+  name: "Terrace Up Light - 3"
   reboot_timeout: 2d
   update_interval: 5min
 
@@ -16,7 +14,10 @@ esphome:
 # Enable logging
 logger:
   level: INFO
-  
+
+web_server:
+  port: 80
+
 sensor:
   - platform: wifi_signal
     name: ${device} Wifi Signal Strength
@@ -24,18 +25,12 @@ sensor:
   - platform: uptime
     name: ${device} Uptime
 
-binary_sensor:
+output:
   - platform: gpio
-    pin:
-      number: GPIO0
-      mode: INPUT_PULLUP
-      inverted: True
-    name: "${channel_1} Button"
-  - platform: status
-    name: "${name} Status"
-
-switch:
-  - platform: gpio
-    name: "${channel_1}"
     pin: GPIO12
+    id: gpio12
 
+light:
+  - platform: binary
+    name: ${name}
+    output: gpio12
