@@ -42,22 +42,6 @@ recorder:
 #   - sensor.aquaratemp01_humidity
 #   - sensor.aquaratemp01_pressure
 
-#mqtt:
-#  discovery: true
-#  broker: 192.168.0.5
-#  birth_message:
-#    topic: "hass/status"
-#    payload: "online"
-#  will_message:
-#    topic: "hass/status"
-#    payload: "offline"
-
-media_player:
-  # Use the Python ADB implementation
-  - platform: androidtv
-    name: MiBoxTV
-    host: 192.168.30.59
-
 camera:
   - platform: generic
     name: Living Room Camera
@@ -149,20 +133,6 @@ input_number:
     max: 255
     step: 1
 
-# influxdb:
-#   host: 192.168.0.5
-#   include:
-#     domains:
-#       - sensor
-
-# device_tracker:
-#   - platform: nmap_tracker
-#     hosts: 192.168.0.0/24
-#     consider_home: 1800
-#     exclude:
-#       - 192.168.0.99
-#       - 192.168.0.5
-#       - 192.168.0.10
 
 switch:
   - platform: mqtt
@@ -273,6 +243,15 @@ switch:
 
 ### LIGHTS
 light:
+  - platform group
+    name: Evening Lights
+    entities:
+      - light.bedroomlamp
+      - light.bedroom_bed_rgb
+      - light.zosialamp
+      - light.barlamp
+      - light.livingroom_leds
+
   - platform: group
     name: Inside Lights
     entities:
@@ -314,7 +293,6 @@ light:
     entities:
       - light.zosia_main
       - light.zosia_wall
-      - light.rgb01
 
   - platform: group
     name: Bedroom Lights
@@ -396,7 +374,7 @@ light:
 
   - platform: mqtt
     schema: json
-    name: Livingroom Leds
+    name: Livingroom Leds MQTT
     command_topic: "zigbee2mqtt/LivingroomLeds/set"
     state_topic: "zigbee2mqtt/LivingroomLeds"
     brightness: true
@@ -409,23 +387,6 @@ light:
     color_temp: true
     brightness: true
     rgb: true
-
-# ecovacs:
-#   username: vibowit@gmail.com
-#   password: !secret deebot_pass
-#   country: pl
-#   continent: eu
-
-# deebot:
-#   username: !secret deebot_username
-#   password: !secret deebot_password
-#   country: !secret deebot_coutry
-#   continent: !secret deebot_continent
-# deviceid:
-#   - !secret deebot_id
-# live_map: false
-
-# circadian_lighting:
 
 weather:
   - platform: darksky
@@ -498,11 +459,6 @@ sensor:
         friendly_name: Stairs Light Level
         value_template: >-
           {{ (states('sensor.aquaramotion01_illuminance')|float + states('sensor.aquaramotion02_illuminance')|float)/2.0 }}
-
-      #  vacuum_battery:
-      #    friendly_name: "Kasia Battery"
-      #    unit_of_measurement: '%'
-      #    value_template: "{{ state_attr('vacuum.kasia', 'battery_level') }}"
 
 binary_sensor:
   - platform: mqtt
