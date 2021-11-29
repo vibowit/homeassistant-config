@@ -243,7 +243,7 @@ switch:
 
 ### LIGHTS
 light:
-  - platform group
+  - platform: group
     name: Evening Lights
     entities:
       - light.bedroomlamp
