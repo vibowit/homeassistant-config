@@ -374,7 +374,7 @@ light:
 
   - platform: mqtt
     schema: json
-    name: Livingroom Leds MQTT
+    name: Livingroom Leds
     command_topic: "zigbee2mqtt/LivingroomLeds/set"
     state_topic: "zigbee2mqtt/LivingroomLeds"
     brightness: true
