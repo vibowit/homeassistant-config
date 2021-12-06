@@ -24,6 +24,15 @@ frontend:
 
 api:
 
+zha:
+  zigpy_config:
+    network:
+      channel: 15             # What channel the radio should try to use.
+      channels: [15, 20, 25]  # Channel mask
+  device_config:
+    ec:1b:bd:ff:fe:75:40:4e-1:
+      type: "light"
+
 recorder:
   db_url: !secret recorder_db_url
   purge_keep_days: 4

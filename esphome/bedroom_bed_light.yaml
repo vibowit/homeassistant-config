@@ -1,0 +1,40 @@
+---
+substitutions:
+  device: bedroom_bed_light
+  name: "Bedroom Bed Light"
+  reboot_timeout: 2d
+  update_interval: 5min
+
+esphome:
+  name: ${device}
+  platform: ESP8266
+  board: d1_mini
+
+<<: !include common/common.yaml
+# Enable logging
+logger:
+  level: INFO
+
+web_server:
+  port: 80
+
+# Example configuration entry
+light:
+  - platform: fastled_clockless
+    chipset: WS2811
+    pin: D4
+    num_leds: 60
+    rgb_order: BRG
+    name: "Bedroom Bed RGB"
+    effects:
+      # Use default parameters:
+      - random:
+      # Customize parameters
+      - random:
+          name: "Slow Random Effect"
+          transition_length: 30s
+          update_interval: 30s
+      - random:
+          name: "Fast Random Effect"
+          transition_length: 4s
+          update_interval: 5s
