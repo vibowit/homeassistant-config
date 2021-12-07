@@ -535,34 +535,32 @@
       entity_id: switch.ikeaplug03
       domain: switch
   mode: single
-- id: "1615592855740"
-  alias: "Lights: Turn off at night"
+
+
+- id: lights-livingroom-side-button
+  alias: "Light: Living Room Side Button Light Off"
   description: ""
   trigger:
-    - type: no_motion
-      platform: device
-      device_id: ffbe509404e1f8e04819dcd98bb08980
-      entity_id: binary_sensor.aquaramotion02_occupancy
-      domain: binary_sensor
-      for:
-        hours: 0
-        minutes: 30
-        seconds: 0
-        milliseconds: 0
-    - type: no_motion
-      platform: device
-      device_id: ffbe509404e1f8e04819dcd98bb08980
-      entity_id: binary_sensor.aquaramotion02_occupancy
-      domain: binary_sensor
-      for:
-        hours: 0
-        minutes: 30
-        seconds: 0
-        milliseconds: 0
-  condition:
-    - condition: time
-      before: "05:00:00"
-      after: "01:00:00"
+    - platform: state
+      entity_id: binary_sensor.livingroom_side_light_input
+      to: "off"
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.livingroom_leds
+      data:
+        transition: 3
+  mode: single
+
+- id: lights-midnight-shutdown
+  alias: Turn off lights and music at midnight
+  initial_state: 'on'
+  trigger:
+    platform: time
+    at: '23:59:00'
+  #
+  # TODO: condition ze nie ma ruchu
+  #
   action:
     - service: light.turn_off
       target:
@@ -570,18 +568,4 @@
       data:
         transition: 120
   mode: single
-- id: "1618763983363"
-  alias: "Light: Living Room Side Button Light Off"
-  description: ""
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.livingroom_side_light_input
-      to: "off"
-  condition: []
-  action:
-    - service: light.turn_off
-      target:
-        entity_id: light.livingroom_leds
-      data:
-        transition: 5
-  mode: single
+  # tu moze dodam wylaczenie muzyki
