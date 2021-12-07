@@ -1,0 +1,136 @@
+
+- platform: group
+  name: Inside Lights
+  entities:
+    - light.downstairs_lights
+    - light.upstairs_lights
+
+- platform: group
+  name: Outside Lights
+  entities:
+    - light.garden
+    - light.porch
+
+- platform: group
+  name: Kitchen Lights
+  entities:
+    - light.kitchen_upper
+    - light.kitchen_table
+    - light.kitchen_cabinet
+
+- platform: group
+  name: Livingroom Lights
+  entities:
+    - light.tv
+    - light.livingroom_leds
+    - light.livingroom_lamps
+
+- platform: group
+  name: Downstairs Lights
+  entities:
+    - light.living_room_lights
+    - light.kitchen_lights
+    - light.stairs
+    - light.stairs_christmas
+    - light.hall
+    - light.garage_sonoff_light
+
+- platform: group
+  name: Zosia Lights
+  entities:
+    - light.zosia_main
+    - light.zosia_wall
+
+- platform: group
+  name: Bedroom Lights
+  entities:
+    - light.bedroom_bed
+    - light.ikeabulb03
+
+- platform: group
+  name: Upstairs Lights
+  entities:
+    - light.zosia_lights
+    - light.wiktor
+    - light.upper_hall
+    - light.bedroom_lights
+
+- platform: group
+  name: Garden Lights
+  entities:
+    - light.terrace_1
+    - light.terrace_2
+    - light.terrace_3
+    - light.terrace_down
+
+- platform: switch
+  name: "Kitchen Upper"
+  entity_id: switch.kitchen_Light_01
+
+- platform: switch
+  name: "Zosia"
+  entity_id: switch.mini01
+
+- platform: switch
+  name: "Zosia Wall"
+  entity_id: switch.ikeaplug01
+
+- platform: switch
+  name: "Kitchen Cabinet"
+  entity_id: switch.mini04
+
+- platform: switch
+  name: "Kitchen Table"
+  entity_id: switch.mini03
+
+- platform: switch
+  name: "Wiktor"
+  entity_id: switch.mini02
+
+- platform: switch
+  name: "Porch"
+  entity_id: switch.mini05
+
+- platform: switch
+  name: "Terrace 1"
+  entity_id: switch.terrace1
+
+- platform: switch
+  name: "Terrace 2"
+  entity_id: switch.terrace2
+
+- platform: switch
+  name: "Terrace 3"
+  entity_id: switch.terrace3
+
+- platform: switch
+  name: "Terrace Down"
+  entity_id: switch.shelly_terrace_down
+
+- platform: switch
+  name: "Upper Hall"
+  entity_id: switch.mini08
+
+- platform: switch
+  name: "Stairs"
+  entity_id: switch.mini07
+
+- platform: switch
+  name: "Stairs Christmas"
+  entity_id: switch.ikeaplug03
+
+- platform: mqtt
+  schema: json
+  name: Livingroom Leds
+  command_topic: "zigbee2mqtt/LivingroomLeds/set"
+  state_topic: "zigbee2mqtt/LivingroomLeds"
+  brightness: true
+
+- platform: mqtt
+  schema: json
+  name: Livingroom Lamps
+  command_topic: "zigbee2mqtt/LivingroomLamps/set"
+  state_topic: "zigbee2mqtt/LivingroomLamps"
+  color_temp: true
+  brightness: true
+  rgb: true
