@@ -187,8 +187,8 @@ projector_on:
     - service: remote.send_command
       data:
         entity_id: remote.broadlink_mini_remote
-        device: projector
-        command: turn on
+        device: Benq
+        command: Turn on
     - service: input_boolean.turn_on
       entity_id: input_boolean.projector_state
 projector_off:
@@ -196,22 +196,22 @@ projector_off:
     - service: remote.send_command
       data:
         entity_id: remote.broadlink_mini_remote
-        device: projector
-        command: turn off
+        device: Benq
+        command: Turn off
     - delay:
         seconds: 3
     - service: remote.send_command
       data:
         entity_id: remote.broadlink_mini_remote
-        device: projector
-        command: turn off
+        device: Benq
+        command: Turn off
     - delay:
         seconds: 3
     - service: remote.send_command
       data:
         entity_id: remote.broadlink_mini_remote
-        device: projector
-        command: turn off
+        device: Benq
+        command: Turn off
     - service: input_boolean.turn_off
       entity_id: input_boolean.projector_state
 tv_on:
