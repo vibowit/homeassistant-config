@@ -1,0 +1,49 @@
+
+- platform: mqtt
+  name: "Blue Button"
+  state_topic: "tele/RFBridge1/RESULT"
+  value_template: >-
+    {% if value_json.RfReceived.Data == 'F92001' %}
+      {{'ON'}}
+    {% else %}
+      {{states('binary_sensor.blue_button') | upper}}
+    {% endif %}
+  off_delay: 15
+
+- platform: mqtt
+  name: Shelly Terrace Down
+  state_topic: "shellies/shellyswitch25-98F4ABF36920/input/0"
+  payload_on: "1"
+  payload_off: "0"
+
+- platform: mqtt
+  name: Shelly Terrace Up
+  state_topic: "shellies/shellyswitch25-98F4ABF36920/input/1"
+  payload_on: "1"
+  payload_off: "0"
+
+- platform: mqtt
+  name: Shelly TV
+  state_topic: "shellies/shellyswitch25-8CAAB5059118/input/0"
+  payload_on: "1"
+  payload_off: "0"
+
+- platform: mqtt
+  name: Shelly TV Side
+  state_topic: "shellies/shellyswitch25-8CAAB5059118/input/1"
+  payload_on: "1"
+  payload_off: "0"
+
+- platform: mqtt
+  name: Living Room Cam Sensor
+  state_topic: "yicam/motion"
+  payload_on: "motion_start"
+  payload_off: "motion_stop"
+  device_class: motion
+
+- platform: template
+  sensors:
+    dark_stairs:
+      friendly_name: Dark Stairs
+      value_template: >-
+        {{ (states('sensor.aquaramotion01_illuminance')|float + states('sensor.aquaramotion02_illuminance')|float)/2.0 < 15 }}

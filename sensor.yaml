@@ -1,0 +1,65 @@
+- platform: darksky
+  api_key: !secret darksky_key
+  forecast:
+    - 0
+  hourly_forecast:
+    - 0
+    - 1
+  monitored_conditions:
+    - summary
+    - icon
+    - temperature
+    - humidity
+    - pressure
+    - wind_speed
+    - moon_phase
+    - sunrise_time
+    - sunset_time
+
+- platform: mqtt
+  name: "Shelly Terrace Down Power"
+  state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/power"
+  unit_of_measurement: "Watts"
+
+- platform: mqtt
+  name: "Shelly Terrace Down Energy"
+  state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/energy"
+  unit_of_measurement: "kWh"
+
+- platform: mqtt
+  name: "Shelly Terrace Up Power"
+  state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1/power"
+  unit_of_measurement: "Watts"
+
+- platform: mqtt
+  name: "Shelly Terrace Up Energy"
+  state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1/energy"
+  unit_of_measurement: "kWh"
+
+- platform: systemmonitor
+  resources:
+    - type: disk_use_percent
+    - type: memory_use_percent
+    - type: processor_temperature
+    - type: last_boot
+    - type: processor_use
+
+- platform: template
+  sensors:
+    stairs_direction:
+      friendly_name: Stairs Move Direction
+      value_template: >-
+        {% if is_state('binary_sensor.aquaramotion01_occupancy', 'on') and is_state('binary_sensor.aquaramotion02_occupancy', 'on') -%}
+          {% if as_timestamp(states.binary_sensor.aquaramotion01_occupancy.last_changed) > as_timestamp(states.binary_sensor.aquaramotion02_occupancy.last_changed) %}
+            up
+          {% else %}
+            down
+          {% endif %}
+        {% else %}
+          none
+        {% endif -%}
+
+    stairs_light:
+      friendly_name: Stairs Light Level
+      value_template: >-
+        {{ (states('sensor.aquaramotion01_illuminance')|float + states('sensor.aquaramotion02_illuminance')|float)/2.0 }}
