@@ -578,10 +578,7 @@
     entity_id:
       - binary_sensor.bedroommotion_occupancy
     to: "on"
-  condition:
-    entity_id: sun.sun
-    attribute: elevation
-    below: 4
+  condition: "{{ state_attr('sun.sun', 'elevation') < 4 }}"
   action:
     - service: light.turn_on
       data:
