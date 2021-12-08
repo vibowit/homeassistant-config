@@ -30,6 +30,7 @@ recorder:
   include:
     domains:
       - sensor
+      - binary_sensor
       - light
       - timer
       - person
@@ -53,36 +54,6 @@ google_assistant:
   project_id: vibohass
   service_account: !include vibohass_service.json
   report_state: true
-  exposed_domains:
-    - switch
-    - light
-  entity_config:
-    switch.reboot_garage_sonoff:
-      expose: false
-    switch.kitchen_light_01:
-      expose: false
-    switch.audiolab_optical:
-      expose: false
-    switch.audiolab_video:
-      expose: false
-    switch.audiolab_coaxial:
-      expose: false
-    switch.mini01:
-      expose: false
-    switch.mini02:
-      expose: false
-    switch.mini03:
-      expose: false
-    switch.mini04:
-      expose: false
-    switch.mini05:
-      expose: false
-    switch.mini06:
-      expose: false
-    switch.mini07:
-      expose: false
-    switch.mini08:
-      expose: false
 
 # Text to speech
 tts:
@@ -104,22 +75,14 @@ spotify:
   client_secret:
     !secret hass_spotify_client_secret
 
+weather:
+  - platform: darksky
+    api_key: !secret darksky_key
+    mode: daily
+
     #spotcast:
     #sp_dc: !secret sp_dc
     # sp_key: !secret sp_key
-
-# climate:
-#   - platform: climate_ip
-#     config_file: 'samsung_2878.yaml'
-#     cert: ''
-#     #cert: 'ac14k_m.pem'
-#     # set as '' to skip certificate verification
-#     ip_address: '192.168.0.87'
-#     token: '988c5ad4-fc75-4d87-98aa-e4ce43ac9e02'
-#     mac: 'BC:8C:CD:5E:5D:DD'
-#     name: 'Zosia AC'
-#     debug: false
-#     poll: disable_ip
 
 # to use with automations
 input_select: !include input_select.yaml
@@ -139,129 +102,20 @@ switch: !include switch.yaml
 ### LIGHTS
 light: !include light.yaml
 
-weather:
-  - platform: darksky
-    api_key: !secret darksky_key
-    mode: daily
+## BINARY_SENSOR
+binary_sensor: !include binary_sensor.yaml
 
-sensor:
-  - platform: darksky
-    api_key: !secret darksky_key
-    forecast:
-      - 0
-    hourly_forecast:
-      - 0
-      - 1
-    monitored_conditions:
-      - summary
-      - icon
-      - temperature
-      - humidity
-      - pressure
-      - wind_speed
-      - moon_phase
-      - sunrise_time
-      - sunset_time
+## SENSOR
+sensor: !include sensor.yaml
 
-  - platform: mqtt
-    name: "Shelly Terrace Down Power"
-    state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/power"
-    unit_of_measurement: "Watts"
-
-  - platform: mqtt
-    name: "Shelly Terrace Down Energy"
-    state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/energy"
-    unit_of_measurement: "kWh"
-
-  - platform: mqtt
-    name: "Shelly Terrace Up Power"
-    state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1/power"
-    unit_of_measurement: "Watts"
-
-  - platform: mqtt
-    name: "Shelly Terrace Up Energy"
-    state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1/energy"
-    unit_of_measurement: "kWh"
-
-  - platform: systemmonitor
-    resources:
-      - type: disk_use_percent
-      - type: memory_use_percent
-      - type: processor_temperature
-      - type: last_boot
-      - type: processor_use
-
-  - platform: template
-    sensors:
-      stairs_direction:
-        friendly_name: Stairs Move Direction
-        value_template: >-
-          {% if is_state('binary_sensor.aquaramotion01_occupancy', 'on') and is_state('binary_sensor.aquaramotion02_occupancy', 'on') -%}
-            {% if as_timestamp(states.binary_sensor.aquaramotion01_occupancy.last_changed) > as_timestamp(states.binary_sensor.aquaramotion02_occupancy.last_changed) %}
-              up
-            {% else %}
-              down
-            {% endif %}
-          {% else %}
-            none
-          {% endif -%}
-
-      stairs_light:
-        friendly_name: Stairs Light Level
-        value_template: >-
-          {{ (states('sensor.aquaramotion01_illuminance')|float + states('sensor.aquaramotion02_illuminance')|float)/2.0 }}
-
-binary_sensor:
-  - platform: mqtt
-    name: "Blue Button"
-    state_topic: "tele/RFBridge1/RESULT"
-    value_template: >-
-      {% if value_json.RfReceived.Data == 'F92001' %}
-        {{'ON'}}
-      {% else %}
-        {{states('binary_sensor.blue_button') | upper}}
-      {% endif %}
-    off_delay: 15
-
-  - platform: mqtt
-    name: Shelly Terrace Down
-    state_topic: "shellies/shellyswitch25-98F4ABF36920/input/0"
-    payload_on: "1"
-    payload_off: "0"
-
-  - platform: mqtt
-    name: Shelly Terrace Up
-    state_topic: "shellies/shellyswitch25-98F4ABF36920/input/1"
-    payload_on: "1"
-    payload_off: "0"
-
-  - platform: mqtt
-    name: Shelly TV
-    state_topic: "shellies/shellyswitch25-8CAAB5059118/input/0"
-    payload_on: "1"
-    payload_off: "0"
-
-  - platform: mqtt
-    name: Shelly TV Side
-    state_topic: "shellies/shellyswitch25-8CAAB5059118/input/1"
-    payload_on: "1"
-    payload_off: "0"
-
-  - platform: mqtt
-    name: Living Room Cam Sensor
-    state_topic: "yicam/motion"
-    payload_on: "motion_start"
-    payload_off: "motion_stop"
-    device_class: motion
-
-  - platform: template
-    sensors:
-      dark_stairs:
-        friendly_name: Dark Stairs
-        value_template: >-
-          {{ (states('sensor.aquaramotion01_illuminance')|float + states('sensor.aquaramotion02_illuminance')|float)/2.0 < 15 }}
-
+## GROUPS
 group: !include groups.yaml
+
+## AUTOMATIONS
 automation: !include automations.yaml
+
+## SCRIPTS
 script: !include scripts.yaml
+
+## SCENES
 scene: !include scenes.yaml

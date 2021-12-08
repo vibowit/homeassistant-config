@@ -569,3 +569,38 @@
         transition: 120
   mode: single
   # tu moze dodam wylaczenie muzyki
+
+- id: light-bedroom-move-turn-on
+  alias: Turn On Bedroom Light - Motion
+  description: Włącz światło gdy wykryjesz ruch w sypialni
+  trigger:
+    platform: state
+    entity_id:
+      - binary_sensor.bedroommotion_occupancy
+    to: "on"
+  condition:
+    entity_id: sun.sun
+    attribute: elevation
+    below: 4
+  action:
+    - service: light.turn_on
+      data:
+        transition: 7
+        color_name: blueviolet
+        brightness_pct: 30
+        target:
+          entity_id: light.bedroom_lights
+
+- id: light-bedroom-move-turn-off
+  alias: Turn Off Light - No Motion
+  trigger:
+    platform: state
+    entity_id:
+      - binary_sensor.bedroommotion_occupancy
+    to: "off"
+    for: 00:00:30
+  action:
+    - service: light.turn_off
+      data:
+        target:
+          entity_id: light.bedroom_lights
