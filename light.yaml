@@ -1,4 +1,3 @@
-
 - platform: group
   name: Inside Lights
   entities:
@@ -40,7 +39,7 @@
     - light.zosia_lights
     - light.wiktor_lights
     - light.upper_hall
-    - light.bedroom_lights
+    - light.bedroom_group
 
 - platform: group
   name: Zosia Lights
@@ -56,6 +55,7 @@
 
 - platform: group
   name: Bedroom Lights
+  unique_id: bedroom_group
   entities:
     - light.bedroom_bed_rgb
     - light.bedroomlamp
