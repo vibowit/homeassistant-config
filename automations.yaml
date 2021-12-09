@@ -565,7 +565,7 @@
         color_name: blueviolet
         brightness_pct: 30
         target:
-          entity_id: light.bedroom_lights
+          entity_id: light.bedroom_bed_rgb
 
 - id: light-bedroom-move-turn-off
   alias: "Lights: Turn Off Light - No Motion"
