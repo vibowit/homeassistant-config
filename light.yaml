@@ -55,7 +55,7 @@
 
 - platform: group
   name: Bedroom Lights
-  unique_id: bedroom_group
+  # unique_id: bedroom_group
   entities:
     - light.bedroom_bed_rgb
     - light.bedroomlamp
