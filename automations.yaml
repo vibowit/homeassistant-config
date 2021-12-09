@@ -341,33 +341,7 @@
       data:
         transition: 5
   mode: single
-- id: "1614380763598"
-  alias: Lights Off at Night
-  description: ""
-  trigger:
-    - platform: time
-      at: 01:00:00
-  condition:
-    - condition: not
-      conditions:
-        - condition: state
-          entity_id: media_player.shield_2
-          state: playing
-        - condition: and
-          conditions:
-            - condition: not
-              conditions:
-                - condition: state
-                  entity_id: media_player.livingroon
-                  state: playing
-  action:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id:
-          - light.downstairs_lights
-          - light.living_room_lights
-  mode: single
+
 - id: "1614966339040"
   alias: "Light: Living Room Brightness Up Button"
   description: ""
@@ -518,8 +492,9 @@
       entity_id: switch.ikeaplug03
       domain: switch
   mode: single
+
 - id: "1615592064653"
-  alias: "Light: Wiktor Lamp Button Off"
+  alias: "Lights: Wiktor Lamp Button Off"
   description: ""
   trigger:
     - platform: device
@@ -538,7 +513,7 @@
 
 
 - id: lights-livingroom-side-button
-  alias: "Light: Living Room Side Button Light Off"
+  alias: "Lights: Living Room Side Button Light Off"
   description: ""
   trigger:
     - platform: state
@@ -553,7 +528,7 @@
   mode: single
 
 - id: lights-midnight-shutdown
-  alias: Turn off lights and music at midnight
+  alias: "Lights: Turn off lights and music at midnight"
   initial_state: 'on'
   trigger:
     platform: time
@@ -571,14 +546,18 @@
   # tu moze dodam wylaczenie muzyki
 
 - id: light-bedroom-move-turn-on
-  alias: Turn On Bedroom Light - Motion
+  alias: "Lights: Turn On Bedroom Light - Motion"
   description: Włącz światło gdy wykryjesz ruch w sypialni
   trigger:
     platform: state
     entity_id:
       - binary_sensor.bedroommotion_occupancy
     to: "on"
-  condition: "{{ state_attr('sun.sun', 'elevation') < 4 }}"
+  condition:
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: 4
   action:
     - service: light.turn_on
       data:
@@ -589,7 +568,7 @@
           entity_id: light.bedroom_lights
 
 - id: light-bedroom-move-turn-off
-  alias: Turn Off Light - No Motion
+  alias: "Lights: Turn Off Light - No Motion"
   trigger:
     platform: state
     entity_id:
