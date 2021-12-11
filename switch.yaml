@@ -47,9 +47,13 @@
     screen:
       value_template: "{{ is_state('input_boolean.screen_open', 'on') }}"
       turn_on:
-        service: esphome.livingroom_rfbridge_screen_down
+        - service: esphome.livingroom_rfbridge_screen_down
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.screen_open
       turn_off:
-        service: esphome.livingroom_rfbridge_screen_up
+        - service: esphome.livingroom_rfbridge_screen_up
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.screen_open
 
     movie_mode:
       friendly_name: "Movie Mode"
