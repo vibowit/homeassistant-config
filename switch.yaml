@@ -14,16 +14,16 @@
   payload_off: "off"
   retain: false
 
-- platform: mqtt
-  name: "Screen"
-  state_topic: "stat/RFBridge1/RfCode"
-  command_topic: "cmnd/RFBridge1/Backlog"
-  availability_topic: "tele/RFBridge1/LWT"
-  payload_available: "Online"
-  payload_not_available: "Offline"
-  payload_on: "RfRaw AAB04D0508026C014A00C8008C10FEC081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A081A08181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A081A0A0A0A0818181818181A081B0A055;RfRaw 0"
-  payload_off: "RfRaw AAB04B04080276014000D210D6B081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A090A0A0A0A0A081908181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A0A0A0A081A0818181A081818181A0A055; RfRaw 0"
-  optimistic: true
+# - platform: mqtt
+#   name: "Screen"
+#   state_topic: "stat/RFBridge1/RfCode"
+#   command_topic: "cmnd/RFBridge1/Backlog"
+#   availability_topic: "tele/RFBridge1/LWT"
+#   payload_available: "Online"
+#   payload_not_available: "Offline"
+#   payload_on: "RfRaw AAB04D0508026C014A00C8008C10FEC081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A081A08181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A081A0A0A0A0818181818181A081B0A055;RfRaw 0"
+#   payload_off: "RfRaw AAB04B04080276014000D210D6B081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A090A0A0A0A0A081908181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A0A0A0A081A0818181A081818181A0A055; RfRaw 0"
+#   optimistic: true
 
 - platform: broadlink
   mac: C8:F7:42:17:45:41
@@ -43,6 +43,13 @@
       turn_off:
         - service: script.turn_on
           entity_id: script.projector_off
+
+    screen:
+      value_template: "{{ is_state('input_boolean.screen_open', 'on') }}"
+      turn_on:
+        service: esphome.livingroom_rfbridge_screen_down
+      turn_off:
+        service: esphome.livingroom_rfbridge_screen_up
 
     movie_mode:
       friendly_name: "Movie Mode"

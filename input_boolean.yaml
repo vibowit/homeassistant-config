@@ -1,21 +1,32 @@
 moviemode:
   name: Movie Mode
   initial: off
+
 videoinput:
   name: Vide Input
   initial: off
+
 audioinput:
   name: Audio Input
   initial: off
+
 stairs_switch_auto_on:
   name: "Stairs Light Turned On Automatically"
   initial: off
+
 projector_state:
   name: Projector State
   initial: off
+
 bedroom_move_light:
   name: "Bedroom Light Turned On Move"
   initial: off
+
 bedroom_evening_fired:
   name: "Bedroom Evening Used"
   initial: off
+
+screen_open:
+    name: Projector Screen Open
+    initial: off
+    icon: mdi:projector-screen
