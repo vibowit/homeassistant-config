@@ -555,9 +555,9 @@
     data:
       target:
         entity_id: light.bedroom_lights
-- id: '1639313979906'
-  alias: Light - Zosia - Wall Off - Button Off
-  description: ''
+
+- id: light-zosia-button-on
+  alias: 'Light: Zosia Wall - Button On'
   trigger:
   - platform: device
     domain: mqtt
@@ -568,6 +568,22 @@
   condition: []
   action:
   - service: switch.turn_on
+    target:
+      entity_id: switch.zosiaplug
+  mode: single
+
+- id: light-zosia-button-off
+  alias: 'Light: Zosia Wall - Button Off'
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 2e8ecd35f0a1e3c7fa1a2e6cb1c1f0d3
+    type: click
+    subtype: 'off'
+    discovery_id: 0xec1bbdfffe992a86 click_off
+  condition: []
+  action:
+  - service: switch.turn_off
     target:
       entity_id: switch.zosiaplug
   mode: single
