@@ -22,7 +22,7 @@
   name: Livingroom Lights
   entities:
     - light.livingroom_tv_light
-    - light.livingroom_leds
+    - light.livingroomleds
     - light.livingroom_lamps
 
 - platform: group
@@ -80,18 +80,22 @@
   name: "Terrace Down"
   entity_id: switch.shelly_terrace_down
 
-- platform: mqtt
-  schema: json
-  name: Livingroom Leds
-  command_topic: "zigbee2mqtt/LivingroomLeds/set"
-  state_topic: "zigbee2mqtt/LivingroomLeds"
-  brightness: true
+- platform: switch
+  name: "Christmas Tree"
+  entity_id: switch.christmastreeplug
 
-- platform: mqtt
-  schema: json
-  name: Livingroom Lamps
-  command_topic: "zigbee2mqtt/LivingroomLamps/set"
-  state_topic: "zigbee2mqtt/LivingroomLamps"
-  color_temp: true
-  brightness: true
-  rgb: true
+# - platform: mqtt
+#   schema: json
+#   name: Livingroom Leds
+#   command_topic: "zigbee2mqtt/LivingroomLeds/set"
+#   state_topic: "zigbee2mqtt/LivingroomLeds"
+#   brightness: true
+
+# - platform: mqtt
+#   schema: json
+#   name: Livingroom Lamps
+#   command_topic: "zigbee2mqtt/LivingroomLamps/set"
+#   state_topic: "zigbee2mqtt/LivingroomLamps"
+#   color_temp: true
+#   brightness: true
+#   rgb: true

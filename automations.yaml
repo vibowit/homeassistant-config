@@ -508,6 +508,7 @@
     data:
       transition: 3
   mode: single
+
 - id: lights-midnight-shutdown
   alias: 'Lights: Turn off lights and music at midnight'
   initial_state: 'on'
@@ -521,6 +522,7 @@
     data:
       transition: 120
   mode: single
+
 - id: light-bedroom-move-turn-on
   alias: 'Lights: Turn On Bedroom Light - Motion'
   description: Włącz światło gdy wykryjesz ruch w sypialni
@@ -541,7 +543,10 @@
       color_name: blueviolet
       brightness_pct: 30
       target:
-        entity_id: light.bedroom_bed_rgb
+        entity_id:
+          - light.bedroom_bed_rgb
+          - light.bedroom_lamp
+
 - id: light-bedroom-move-turn-off
   alias: 'Lights: Turn Off Light - No Motion'
   trigger:
@@ -555,6 +560,7 @@
     data:
       target:
         entity_id: light.bedroom_lights
+
 - id: light-zosia-button-on
   alias: 'Light: Zosia Wall - Button On'
   trigger:
@@ -570,6 +576,7 @@
     target:
       entity_id: switch.zosiaplug
   mode: single
+
 - id: light-zosia-button-off
   alias: 'Light: Zosia Wall - Button Off'
   trigger:
@@ -585,7 +592,8 @@
     target:
       entity_id: switch.zosiaplug
   mode: single
-- id: '1639913474817'
+
+- id: light-livingroom-christmastree-button-on
   alias: Light - Living Room - Christmas Tree Button On
   description: ''
   trigger:
@@ -602,7 +610,8 @@
     entity_id: switch.christmastreeplug
     domain: switch
   mode: single
-- id: '1639913520632'
+
+- id: light-livingroom-christmastree-button-off
   alias: Light - Living Room - Christmas Tree Button Off
   description: ''
   trigger:
