@@ -21,6 +21,11 @@ frontend:
 #   # base_url: hass.witkowski.ovh
 #   use_x_forwarded_for: true
 #   trusted_proxies: 10.0.0.1
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 10.10.10.10
+    - 192.168.0.13
 
 api:
 

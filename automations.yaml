@@ -555,7 +555,6 @@
     data:
       target:
         entity_id: light.bedroom_lights
-
 - id: light-zosia-button-on
   alias: 'Light: Zosia Wall - Button On'
   trigger:
@@ -571,7 +570,6 @@
     target:
       entity_id: switch.zosiaplug
   mode: single
-
 - id: light-zosia-button-off
   alias: 'Light: Zosia Wall - Button Off'
   trigger:
@@ -586,4 +584,38 @@
   - service: switch.turn_off
     target:
       entity_id: switch.zosiaplug
+  mode: single
+- id: '1639913474817'
+  alias: Light - Living Room - Christmas Tree Button On
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 0c2d5f8d232eccbf674d7739e81d8338
+    type: action
+    subtype: 'on'
+    discovery_id: 0x842e14fffe78da8d action_on
+  condition: []
+  action:
+  - type: turn_on
+    device_id: a2d540b2c0de785b1753cb67eaec9225
+    entity_id: switch.christmastreeplug
+    domain: switch
+  mode: single
+- id: '1639913520632'
+  alias: Light - Living Room - Christmas Tree Button Off
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 0c2d5f8d232eccbf674d7739e81d8338
+    type: action
+    subtype: 'off'
+    discovery_id: 0x842e14fffe78da8d action_off
+  condition: []
+  action:
+  - type: turn_off
+    device_id: a2d540b2c0de785b1753cb67eaec9225
+    entity_id: switch.christmastreeplug
+    domain: switch
   mode: single
