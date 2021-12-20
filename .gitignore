@@ -15,7 +15,6 @@ config
 
 .storage/
 custom_components/
-blueprints/
 tts/
 www/
 themes/
