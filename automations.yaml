@@ -200,53 +200,6 @@
       entity_id:
       - light.porch_light
   mode: single
-- id: bedroom_move_on
-  alias: Bedroom Move On
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.bedroom_occupancy
-    to: 'on'
-  condition:
-  - condition: template
-    value_template: '{{ state_attr(trigger.entity_id,''illuminance'') | float < 11
-      }}'
-  - condition: numeric_state
-    entity_id: sun.sun
-    attribute: elevation
-    below: -4.0
-  - condition: state
-    entity_id: light.bedroom_bed
-    state: 'off'
-  action:
-  - service: light.turn_on
-    data:
-      entity_id: light.bedroom_bed
-      brightness: 51
-      rgb_color:
-      - 255
-      - 117
-      - 71
-      effect: Solid
-      transition: 4
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.bedroom_move_light
-- id: bedroom_move_off
-  alias: Bedroom Move Off
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.bedroom_occupancy
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: input_boolean.bedroom_move_light
-    state: 'on'
-  action:
-  - service: light.turn_off
-    data:
-      entity_id: light.bedroom_bed
-      transition: 4
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.bedroom_move_light
 - id: prepare_bedroom
   alias: Prepare Bedroom For Nice Sleep
   trigger:
@@ -313,70 +266,6 @@
   action:
   - service: input_boolean.turn_off
     entity_id: input_boolean.bedroom_evening_fired
-- id: '1614351122058'
-  alias: 'Light: Living Room Side Button Light On'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.livingroom_side_light_input
-    to: 'on'
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.livingroom_leds
-    data:
-      transition: 5
-  mode: single
-- id: '1614966339040'
-  alias: 'Light: Living Room Brightness Up Button'
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_up_click
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_up_click
-  condition: []
-  action:
-  - type: brightness_increase
-    device_id: f84d973a74814b59e4144e5e3fdb84d0
-    entity_id: light.ikealed01
-    domain: light
-  - type: brightness_increase
-    device_id: 3975090f5b25421ea49146bba2a444d2
-    entity_id: light.ikealed02
-    domain: light
-  - type: brightness_increase
-    device_id: 21305e4ae29e998c4d4e41bd10459150
-    entity_id: light.ikealed03
-    domain: light
-  mode: single
-- id: '1614966568022'
-  alias: 'Light: Living Room Brightness Down Button'
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_down_click
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_down_click
-  condition: []
-  action:
-  - type: brightness_decrease
-    device_id: f84d973a74814b59e4144e5e3fdb84d0
-    entity_id: light.ikealed01
-    domain: light
-  - type: brightness_decrease
-    device_id: 3975090f5b25421ea49146bba2a444d2
-    entity_id: light.ikealed02
-    domain: light
-  - type: brightness_decrease
-    device_id: 21305e4ae29e998c4d4e41bd10459150
-    entity_id: light.ikealed03
-    domain: light
-  mode: single
 - id: '1614966989339'
   alias: 'Light: Living Room TV Toggle Button'
   description: ''
@@ -394,25 +283,6 @@
       brightness_pct: 100
     target:
       entity_id: light.livingroom_tv_light
-  mode: single
-- id: '1614967364519'
-  alias: 'Light: Living Room Side Toggle Button'
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_down_hold
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_down_hold
-  condition: []
-  action:
-  - service: light.toggle
-    data:
-      transition: 30
-      brightness_pct: 75
-    target:
-      entity_id: light.tv_side
   mode: single
 - id: '1614967489119'
   alias: 'Audio: Audiolab Toggle'
@@ -460,23 +330,6 @@
         data:
           title: '*Battery Level*'
           message: 'Low battery warning for: {{sensors|replace("_"," ")}} '
-- id: '1615592016690'
-  alias: 'Light: Wiktor Lamp Button On'
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 0c2d5f8d232eccbf674d7739e81d8338
-    type: action
-    subtype: 'on'
-    discovery_id: 0x842e14fffe78da8d action_on
-  condition: []
-  action:
-  - type: turn_on
-    device_id: a2d540b2c0de785b1753cb67eaec9225
-    entity_id: switch.ikeaplug03
-    domain: switch
-  mode: single
 - id: '1615592064653'
   alias: 'Lights: Wiktor Lamp Button Off'
   description: ''
@@ -494,21 +347,6 @@
     entity_id: switch.ikeaplug03
     domain: switch
   mode: single
-- id: lights-livingroom-side-button
-  alias: 'Lights: Living Room Side Button Light Off'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.livingroom_side_light_input
-    to: 'off'
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.livingroom_leds
-    data:
-      transition: 3
-  mode: single
-
 - id: lights-midnight-shutdown
   alias: 'Lights: Turn off lights and music at midnight'
   initial_state: 'on'
@@ -522,31 +360,6 @@
     data:
       transition: 120
   mode: single
-
-- id: light-bedroom-move-turn-on
-  alias: 'Lights: Turn On Bedroom Light - Motion'
-  description: Włącz światło gdy wykryjesz ruch w sypialni
-  trigger:
-    platform: state
-    entity_id:
-    - binary_sensor.bedroommotion_occupancy
-    to: 'on'
-  condition:
-  - condition: numeric_state
-    entity_id: sun.sun
-    attribute: elevation
-    below: 4
-  action:
-  - service: light.turn_on
-    data:
-      transition: 7
-      color_name: blueviolet
-      brightness_pct: 30
-      target:
-        entity_id:
-          - light.bedroom_bed_rgb
-          - light.bedroom_lamp
-
 - id: light-bedroom-move-turn-off
   alias: 'Lights: Turn Off Light - No Motion'
   trigger:
@@ -560,7 +373,6 @@
     data:
       target:
         entity_id: light.bedroom_lights
-
 - id: light-zosia-button-on
   alias: 'Light: Zosia Wall - Button On'
   trigger:
@@ -576,7 +388,6 @@
     target:
       entity_id: switch.zosiaplug
   mode: single
-
 - id: light-zosia-button-off
   alias: 'Light: Zosia Wall - Button Off'
   trigger:
@@ -592,7 +403,6 @@
     target:
       entity_id: switch.zosiaplug
   mode: single
-
 - id: light-livingroom-christmastree-button-on
   alias: Light - Living Room - Christmas Tree Button On
   description: ''
@@ -610,7 +420,6 @@
     entity_id: switch.christmastreeplug
     domain: switch
   mode: single
-
 - id: light-livingroom-christmastree-button-off
   alias: Light - Living Room - Christmas Tree Button Off
   description: ''
@@ -628,3 +437,12 @@
     entity_id: switch.christmastreeplug
     domain: switch
   mode: single
+- id: '1639952768697'
+  alias: Light - Bedroom - Motion
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      motion_entity: binary_sensor.bedroommotion_occupancy
+      light_target:
+        entity_id: light.bedroom_lights
