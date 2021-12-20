@@ -446,3 +446,38 @@
       motion_entity: binary_sensor.bedroommotion_occupancy
       light_target:
         entity_id: light.bedroom_lights
+- id: '1640023434422'
+  alias: Light - Bedroom - Button Actions
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e1743.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_entity: sensor.bedroomikeabutton_action
+      helper_last_controller_event: input_text.bedroomlastaction
+      action_button_up_short:
+      - type: turn_on
+        device_id: a47c65c2e510bcd8a1860cf116f359b4
+        entity_id: light.bedroomlamp
+        domain: light
+      action_button_up_long:
+      - type: turn_on
+        device_id: b7ce5e699503c83f7dacd69622009b13
+        entity_id: light.bedroom_bed_rgb
+        domain: light
+      button_up_long_loop: false
+      button_down_long_loop: false
+      button_up_double_press: false
+      button_down_double_press: false
+      action_button_up_double: []
+      action_button_down_short:
+      - type: turn_off
+        device_id: a47c65c2e510bcd8a1860cf116f359b4
+        entity_id: light.bedroomlamp
+        domain: light
+      action_button_down_long:
+      - type: toggle
+        device_id: b7ce5e699503c83f7dacd69622009b13
+        entity_id: light.bedroom_bed_rgb
+        domain: light
+      action_button_down_double: []
