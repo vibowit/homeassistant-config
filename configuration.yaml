@@ -72,7 +72,7 @@ telegram_bot:
 
 notify:
   - platform: telegram
-    name: Nottifier
+    name: Notifier
     chat_id: !secret telegram_bot_main_chat_id
 
 spotify:
@@ -85,9 +85,9 @@ weather:
     api_key: !secret darksky_key
     mode: daily
 
-    #spotcast:
-    #sp_dc: !secret sp_dc
-    # sp_key: !secret sp_key
+spotcast:
+  sp_dc: !secret sp_dc
+  sp_key: !secret sp_key
 
 # to use with automations
 input_select: !include input_select.yaml
