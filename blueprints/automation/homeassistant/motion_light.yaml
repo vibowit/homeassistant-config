@@ -2,7 +2,6 @@ blueprint:
   name: Motion-activated Light
   description: Turn on a light when motion is detected.
   domain: automation
-  source_url:
   input:
     motion_entity:
       name: Motion Sensor

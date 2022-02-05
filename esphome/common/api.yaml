@@ -1,4 +1,0 @@
----
-api:
-  reboot_timeout: ${reboot_timeout}
-  password: !secret ap_wifi_password
