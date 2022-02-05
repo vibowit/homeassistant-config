@@ -1,3 +1,8 @@
+luiza_in_bed:
+  name: 'luiza_in_bed'
+bogus_in_bed:
+  name: 'bogus_in_bed'
+
 moviemode:
   name: Movie Mode
   initial: off
@@ -14,12 +19,16 @@ stairs_switch_auto_on:
   name: "Stairs Light Turned On Automatically"
   initial: off
 
+stairs_auto_on:
+  name: stairs
+  initial: off
+
 projector_state:
   name: Projector State
   initial: off
 
-bedroom_move_light:
-  name: "Bedroom Light Turned On Move"
+bedroom_auto_on:
+  name: "Bedroom Automation Triggered"
   initial: off
 
 bedroom_evening_fired:

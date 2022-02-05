@@ -24,29 +24,59 @@ frontend:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-    - 10.10.10.10
-    - 192.168.0.13
+    - 0.0.0.0/0
+    - 10.10.0.0/16
+    - 192.168.0.0/16
+    - 10.0.0.0/16
+    - 172.16.0.0/16
+#  ip_ban_enabled: true
+#  login_attempts_threshold: 5
 
 api:
 
 recorder:
   db_url: !secret recorder_db_url
-  purge_keep_days: 4
+  purge_keep_days: 15
+  commit_interval: 30
+#  include:
+#    domains:
+#      - sensor
+#      - binary_sensor
+#      - light
+#      - timer
+#      - person
+#      - media_player
+#      - switch
+#  exclude:
+#    entities:
+
+# saving data to influxdb
+influxdb:
+  api_version: 2
+  ssl: false
+  host: 192.168.0.7
+  port: 8086
+  token: r3HLMY3J5boYoStlUH1HwNeksNls34wj2H5hn2o_-eKnKuL6phMVVS7I41bLY0-96J44jFe_ZlViToLF4hcDuw==
+  organization: cb5dc830a1c78a1c
+  bucket: homeassistant
+  tags:
+    source: HA
+  tags_attributes:
+    - friendly_name
+  default_measurement: units
+  exclude:
+    entities:
+      - zone.home
+    domains:
+      - persistent_notification
+      - person
   include:
     domains:
       - sensor
       - binary_sensor
-      - light
-      - timer
-      - person
-      - media_player
-      - switch
-#  exclude:
-#    entities:
-#      - binary_sensor.wiktor_motion_sensor
-#   - sensor.aquaratemp01_temperature
-#   - sensor.aquaratemp01_humidity
-#   - sensor.aquaratemp01_pressure
+      - sun
+    entities:
+      - weather.home
 
 camera:
   - platform: generic
@@ -63,6 +93,8 @@ google_assistant:
 # Text to speech
 tts:
   - platform: google_translate
+    base_url: https://hass.witkowski.ovh
+    service_name: google_say
 
 telegram_bot:
   # - platform: broadcast

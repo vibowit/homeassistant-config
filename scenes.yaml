@@ -353,3 +353,512 @@
       friendly_name: Livingroom Lamps
       supported_features: 59
       state: 'on'
+- id: '1640217657736'
+  name: Bedroom Bright
+  entities:
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 255
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'
+    light.bedroomlamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 0
+      - 0.392
+      rgb_color:
+      - 255
+      - 254
+      - 254
+      xy_color:
+      - 0.323
+      - 0.329
+      color:
+        x: 0.323
+        y: 0.329
+      linkquality: 39
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Bedroom Lamp
+      supported_features: 63
+      state: 'on'
+    select.bedroomlamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 254
+      color:
+        x: 0.323
+        y: 0.329
+      color_mode: xy
+      linkquality: 39
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: Bedroom Lamp power on behavior
+      state: unknown
+  icon: mdi:moon-full
+- id: '1640217856314'
+  name: Bedroom Dim
+  entities:
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 156
+      hs_color:
+      - 150.118
+      - 100
+      rgb_color:
+      - 0
+      - 255
+      - 128
+      xy_color:
+      - 0.164
+      - 0.589
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'
+    light.bedroomlamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 128
+      hs_color:
+      - 90.118
+      - 100
+      rgb_color:
+      - 127
+      - 255
+      - 0
+      xy_color:
+      - 0.269
+      - 0.665
+      color:
+        x: 0.269
+        y: 0.665
+      linkquality: 36
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Bedroom Lamp
+      supported_features: 63
+      state: 'on'
+    select.bedroomlamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 128
+      color:
+        x: 0.269
+        y: 0.665
+      color_mode: xy
+      linkquality: 36
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: Bedroom Lamp power on behavior
+      state: unknown
+  icon: mdi:moon-last-quarter
+- id: '1640218013110'
+  name: Bedroom Dark
+  entities:
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 150
+      hs_color:
+      - 29.843
+      - 74.902
+      rgb_color:
+      - 255
+      - 159
+      - 64
+      xy_color:
+      - 0.55
+      - 0.392
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'
+    light.bedroomlamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 66
+      hs_color:
+      - 30.119
+      - 99.216
+      rgb_color:
+      - 255
+      - 129
+      - 2
+      xy_color:
+      - 0.612
+      - 0.374
+      color:
+        x: 0.612
+        y: 0.374
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Bedroom Lamp
+      supported_features: 63
+      state: 'on'
+    select.bedroomlamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 66
+      color:
+        x: 0.612
+        y: 0.374
+      color_mode: xy
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: Bedroom Lamp power on behavior
+      state: unknown
+  icon: mdi:moon-waning-crescent
+- id: '1640218443696'
+  name: Zosia Bright
+  entities:
+    light.zosialamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 0
+      - 0.392
+      rgb_color:
+      - 255
+      - 254
+      - 254
+      xy_color:
+      - 0.323
+      - 0.329
+      color:
+        x: 0.323
+        y: 0.329
+      linkquality: 90
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Zosia Lamp
+      supported_features: 63
+      state: 'on'
+    select.zosialamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 254
+      color:
+        x: 0.323
+        y: 0.329
+      color_mode: xy
+      color_temp: 250
+      linkquality: 90
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: ZosiaLamp power on behavior
+      state: unknown
+    light.zosia_main_light:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Zosia Main Light
+      supported_features: 8
+      state: 'on'
+    light.zosia_wall:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:string-lights
+      friendly_name: Zosia Wall
+      supported_features: 0
+      state: 'on'
+  icon: mdi:moon-full
+- id: '1640218565720'
+  name: Zosia Dim
+  entities:
+    light.zosialamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 117
+      hs_color:
+      - 30.119
+      - 99.216
+      rgb_color:
+      - 255
+      - 129
+      - 2
+      xy_color:
+      - 0.612
+      - 0.374
+      color:
+        x: 0.612
+        y: 0.374
+      linkquality: 87
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Zosia Lamp
+      supported_features: 63
+      state: 'on'
+    select.zosialamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 117
+      color:
+        x: 0.612
+        y: 0.374
+      color_mode: xy
+      color_temp: 454
+      linkquality: 87
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: ZosiaLamp power on behavior
+      state: unknown
+    light.zosia_wall:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:string-lights
+      friendly_name: Zosia Wall
+      supported_features: 0
+      state: 'on'
+    light.zosia_main_light:
+      supported_color_modes:
+      - onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Zosia Main Light
+      supported_features: 8
+      state: 'off'
+  icon: mdi:moon-last-quarter
+- id: '1640218680739'
+  name: Zosia Dark
+  entities:
+    light.zosia_main_light:
+      supported_color_modes:
+      - onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Zosia Main Light
+      supported_features: 8
+      state: 'off'
+    light.zosia_wall:
+      supported_color_modes:
+      - onoff
+      icon: mdi:string-lights
+      friendly_name: Zosia Wall
+      supported_features: 0
+      state: 'off'
+    light.zosialamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 48
+      hs_color:
+      - 299.754
+      - 95.686
+      rgb_color:
+      - 254
+      - 11
+      - 255
+      xy_color:
+      - 0.385
+      - 0.155
+      color:
+        x: 0.385
+        y: 0.155
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Zosia Lamp
+      supported_features: 63
+      state: 'on'
+    select.zosialamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 48
+      color:
+        x: 0.385
+        y: 0.155
+      color_mode: xy
+      color_temp: 250
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: ZosiaLamp power on behavior
+      state: unknown
+  icon: mdi:moon-waning-crescent
+- id: '1642962420011'
+  name: Bedroom Night Walk
+  entities:
+    switch.bedroom_ble_hub_reboot:
+      icon: mdi:restart
+      friendly_name: Bedroom BLE Hub REBOOT
+      state: 'off'
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 74
+      hs_color:
+      - 344.941
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 64
+      xy_color:
+      - 0.666
+      - 0.284
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'

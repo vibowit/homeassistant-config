@@ -403,49 +403,6 @@
     target:
       entity_id: switch.zosiaplug
   mode: single
-- id: light-livingroom-christmastree-button-on
-  alias: Light - Living Room - Christmas Tree Button On
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 0c2d5f8d232eccbf674d7739e81d8338
-    type: action
-    subtype: 'on'
-    discovery_id: 0x842e14fffe78da8d action_on
-  condition: []
-  action:
-  - type: turn_on
-    device_id: a2d540b2c0de785b1753cb67eaec9225
-    entity_id: switch.christmastreeplug
-    domain: switch
-  mode: single
-- id: light-livingroom-christmastree-button-off
-  alias: Light - Living Room - Christmas Tree Button Off
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 0c2d5f8d232eccbf674d7739e81d8338
-    type: action
-    subtype: 'off'
-    discovery_id: 0x842e14fffe78da8d action_off
-  condition: []
-  action:
-  - type: turn_off
-    device_id: a2d540b2c0de785b1753cb67eaec9225
-    entity_id: switch.christmastreeplug
-    domain: switch
-  mode: single
-- id: '1639952768697'
-  alias: Light - Bedroom - Motion
-  description: ''
-  use_blueprint:
-    path: homeassistant/motion_light.yaml
-    input:
-      motion_entity: binary_sensor.bedroommotion_occupancy
-      light_target:
-        entity_id: light.bedroom_lights
 - id: '1640023434422'
   alias: Light - Bedroom - Button Actions
   description: ''
@@ -481,3 +438,242 @@
         entity_id: light.bedroom_bed_rgb
         domain: light
       action_button_down_double: []
+- id: '1640107464435'
+  alias: Light - Living Room - Leds Switch
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.livingroom_side_light_input
+    to: 'on'
+    from: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: binary_sensor.livingroom_side_light_input
+    to: 'off'
+    from: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition: []
+  action:
+  - type: toggle
+    device_id: f7dfc800d0ab4fce9b1040a3e4f8e412
+    entity_id: light.livingroomleds
+    domain: light
+  mode: single
+- id: '1640203283224'
+  alias: Light - Terrace - Switch Up
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_up
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_up
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition: []
+  action:
+  - service: light.toggle
+    target:
+      entity_id: light.terrace_up
+    data: {}
+  mode: single
+- id: '1640204496632'
+  alias: Light - Terrace - Switch Down
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_down
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_down
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition: []
+  action:
+  - service: switch.toggle
+    target:
+      entity_id: switch.shelly_terrace_down
+  mode: single
+- id: '1641759704094'
+  alias: 'Lights: Movie Stopped'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.shield
+    from: playing
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+  condition: []
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.livingroomleds
+    data:
+      transition: 5
+      brightness_pct: 40
+  mode: single
+- id: '1641759820215'
+  alias: Light - Movie Started
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.shield
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+    to: playing
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.livingroomleds
+    data:
+      transition: 4
+  mode: single
+- id: '1642864207741'
+  alias: 'State: Luiza is going to sleep'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.p20lui_is_charging
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 4
+      seconds: 0
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:00
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.luiza_in_bed
+  mode: single
+- id: '1642864346387'
+  alias: 'State: Bogus is going to sleep'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.oneplus_is_charging
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 4
+      seconds: 0
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:00
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.bogus_in_bed
+  mode: single
+- id: '1642864439307'
+  alias: 'State: Bogus is up'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.oneplus_is_charging
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.bogus_in_bed
+  mode: single
+- id: '1642864507748'
+  alias: 'State: Luiza is up'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.p20lui_is_charging
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.luiza_in_bed
+  mode: single
+- id: '1642864847987'
+  alias: Light - Bedroom Motion
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bedroommotion_occupancy
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    id: bedroom_on
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  - condition: state
+    entity_id: light.bedroom_lights
+    state: 'off'
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.parents_in_bed
+        state: 'on'
+      sequence:
+      - scene: scene.bedroom_night_walk
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.parents_in_bed
+        state: 'off'
+      sequence:
+      - scene: scene.bedroom_bright
+    default: []
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.bedroommotion_occupancy
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.bedroom_lights
+  mode: single

@@ -174,7 +174,7 @@ audiolab_audio:
       data:
         entity_id: remote.broadlink_mini_remote
         device: audiolab
-        command: optical
+        command: digital_prev
 audiolab_video:
   sequence:
     - service: remote.send_command
@@ -249,6 +249,31 @@ audiolab_volume_up_10:
               entity_id: remote.broadlink_mini_remote
               device: audiolab
               command: volume up
+
+audiolab_volume_up_5:
+  sequence:
+    - repeat:
+        count: 5 
+        sequence:
+          - delay: 2
+          - service: remote.send_command
+            data:
+              entity_id: remote.broadlink_mini_remote
+              device: audiolab
+              command: volume up
+
+audiolab_volume_down_5:
+  sequence:
+    - repeat:
+        count: 5 
+        sequence:
+          - delay: 2
+          - service: remote.send_command
+            data:
+              entity_id: remote.broadlink_mini_remote
+              device: audiolab
+              command: volume down
+
 audiolab_volume_down_10:
   sequence:
     - repeat:

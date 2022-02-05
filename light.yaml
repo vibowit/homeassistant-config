@@ -23,7 +23,7 @@
   entities:
     - light.livingroom_tv_light
     - light.livingroomleds
-    - light.livingroom_lamps
+    - light.barlamp
 
 - platform: group
   name: Downstairs Lights
@@ -61,11 +61,16 @@
     - light.bedroomlamp
 
 - platform: group
+  name: Terrace Up
+  entities:
+    - light.terrace_up_light_1
+    - light.terrace_up_light_2
+    - light.terrace_up_light_3
+
+- platform: group
   name: Garden Lights
   entities:
-    - light.terrace_1
-    - light.terrace_2
-    - light.terrace_3
+    - light.terrace_up
     - light.terrace_down
 
 - platform: switch
@@ -77,12 +82,12 @@
   entity_id: switch.zosiaplug
 
 - platform: switch
-  name: "Terrace Down"
-  entity_id: switch.shelly_terrace_down
-
-- platform: switch
   name: "Christmas Tree"
   entity_id: switch.christmastreeplug
+
+- platform: switch
+  name: "Christmas Stairs"
+  entity_id: switch.stairsikeaplug
 
 # - platform: mqtt
 #   schema: json

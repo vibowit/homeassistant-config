@@ -1,3 +1,9 @@
+parents_in_bed:
+  name: Parents in bed
+  entities:
+    - binary_sensor.bogus_in_bed
+    - binary_sensor.luiza_in_bed
+
 family:
   name: Family
   entities:
