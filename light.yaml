@@ -1,0 +1,76 @@
+- platform: group
+  name: Inside Lights
+  entities:
+    - light.downstairs_lights
+    - light.upstairs_lights
+
+- platform: group
+  name: Outside Lights
+  entities:
+    - light.garden
+    - light.porch
+    - light.garage_sonoff_light
+
+- platform: group
+  name: Kitchen Lights
+  entities:
+    - light.kitchen_upper
+    - light.kitchen_table
+    - light.kitchen_cabinet
+
+- platform: group
+  name: Downstairs Lights
+  entities:
+    - light.livingroom_lights
+    - light.kitchen_lights
+    - light.stairs
+    - light.hall
+
+- platform: group
+  name: Upstairs Lights
+  entities:
+    - light.zosia_lights
+    - light.wiktor_lights
+    - light.upper_hall
+    - light.bedroom_group
+
+- platform: group
+  name: Zosia Lights
+  entities:
+    - light.zosia_main_light
+    - light.zosia_wall
+    - light.zosialamp
+
+- platform: group
+  name: Wiktor Lights
+  entities:
+    - light.wiktor_main_light
+
+- platform: group
+  name: Bedroom Lights
+  # unique_id: bedroom_group
+  entities:
+    - light.bedroom_bed_rgb
+    - light.bedroomlamp
+
+- platform: group
+  name: Terrace Up
+  entities:
+    - light.terrace_up_light_1
+    - light.terrace_up_light_2
+    - light.terrace_up_light_3
+
+- platform: group
+  name: Garden Lights
+  entities:
+    - light.terrace_up
+    - light.terrace_down
+
+- platform: switch
+  name: "Kitchen Upper"
+  entity_id: switch.kitchen_Light_01
+
+- platform: switch
+  name: "Zosia Wall"
+  entity_id: switch.zosiaplug
+

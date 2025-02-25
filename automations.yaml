@@ -1,0 +1,1011 @@
+- id: light_move_on
+  alias: Turn On Light - Motion
+  description: Włącz światło gdy wykryjesz ruch
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.garage_occupancy
+    to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: '4'
+    - condition: template
+      value_template: '{{ state_attr(trigger.entity_id,''illuminance'') | float <20
+        }}'
+  action:
+  - service: light.turn_on
+    data_template:
+      entity_id: light.{{ trigger.entity_id.split('.')[1].split('_')[0] }}
+- id: light_no_move_off
+  alias: Turn Off Light - No Motion
+  trigger:
+    platform: state
+    entity_id:
+    - binary_sensor.garage_occupancy
+    to: 'off'
+    for: 00:00:30
+  action:
+  - service: light.turn_off
+    data_template:
+      entity_id: light.{{ trigger.entity_id.split('.')[1].split('_')[0] }}
+- id: rainy_day
+  alias: Rainy Day
+  trigger:
+  - platform: state
+    entity_id: weather.home
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state in ["rainy", "cloudy", "snowy", "snowy,rainy"]
+      }}'
+  - condition: state
+    entity_id: group.family
+    state: home
+  - condition: time
+    after: '14:00'
+    before: '23:00'
+  action:
+    service: light.turn_on
+    entity_id: light.kitchen_upper
+- id: nobody_home_lights_off
+  alias: Nobody Home Lights Off
+  description: Turn Off Lights When Nobody is Home
+  trigger:
+  - platform: state
+    entity_id: group.family
+    to: not_home
+    for:
+      seconds: 60
+  action:
+  - service: light.turn_off
+    entity_id: light.inside_lights
+  initial_state: true
+- id: stairs_light_off_manually
+  alias: Stairs Light Turned Off Manually
+  trigger:
+  - platform: state
+    entity_id: light.stairs_light
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.stairs_switch_auto_on
+    state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.stairs_switch_auto_on
+  mode: single
+- id: movie_mode_button
+  alias: Movie Mode Button On
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 0c2d5f8d232eccbf674d7739e81d8338
+    type: action
+    subtype: 'on'
+    discovery_id: 0x842e14fffe78da8d action_on
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.movie_mode
+  - service: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.movie_scene
+  mode: single
+- id: turn_on_porch
+  alias: Turn On Porch Light
+  description: Turn on porch light when the sun is set
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.porch_light
+  mode: single
+- id: turn_off_porch
+  alias: Turn Off Porch Light
+  description: Turn off porch light when the sun rises
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    to: above_horizon
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.porch_light
+  mode: single
+- id: prepare_bedroom
+  alias: Prepare Bedroom For Nice Sleep
+  trigger:
+  - platform: state
+    entity_id: sensor.stairs_direction
+    to: up
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 02:00:00
+  - condition: state
+    entity_id: media_player.bedroom_speaker
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.bedroom_evening_fired
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.bedroom_bed
+      brightness: 90
+      transition: 4
+      rgb_color:
+      - 255
+      - 36
+      - 200
+  - condition: state
+    entity_id: media_player.spotify_boguslaw_witkowski
+    state: idle
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.bedroom_speaker
+      volume_level: 0.12
+  - service: spotcast.start
+    data:
+      device_name: Bedroom speaker
+      uri: spotify:playlist:37i9dQZF1DXakrXW5YU9SI
+      random_song: true
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.bedroom_evening_fired
+- id: reset_evening_inputs
+  alias: Reset Evening Variables
+  trigger:
+  - platform: time
+    at: 04:00:00
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.bedroom_evening_fired
+- id: '1614966989339'
+  alias: 'Light: Living Room TV Toggle Button'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 247eb9e582f3e489b6e66fb59d3f59af
+    type: action
+    subtype: brightness_up_hold
+    discovery_id: 0x5c0272fffe3fb687 action_brightness_up_hold
+  condition: []
+  action:
+  - service: light.toggle
+    data:
+      brightness_pct: 100
+    target:
+      entity_id: light.livingroom_tv_light
+  mode: single
+- id: lights-midnight-shutdown
+  alias: 'Lights: Turn off lights and music at midnight'
+  trigger:
+  - platform: time
+    at: '23:59:00'
+  action:
+  - service: light.turn_off
+    target:
+      area_id:
+      - living_room
+      - hall_down
+      - hallup
+      - kitchen
+    data:
+      transition: 120
+  initial_state: 'on'
+  mode: single
+- id: light-zosia-button-on
+  alias: 'Light: Zosia Wall - Button On'
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 2e8ecd35f0a1e3c7fa1a2e6cb1c1f0d3
+    type: click
+    subtype: 'on'
+    discovery_id: 0xec1bbdfffe992a86 click_on
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.zosiaplug
+  mode: single
+- id: light-zosia-button-off
+  alias: 'Light: Zosia Wall - Button Off'
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 2e8ecd35f0a1e3c7fa1a2e6cb1c1f0d3
+    type: click
+    subtype: 'off'
+    discovery_id: 0xec1bbdfffe992a86 click_off
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.zosiaplug
+  mode: single
+- id: '1640107464435'
+  alias: 'Light: Living Room - Leds Switch'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.livingroom_side_light_input
+    from: 'off'
+    to: 'on'
+    id: trig_on
+  - platform: state
+    entity_id:
+    - binary_sensor.livingroom_side_light_input
+    from: 'on'
+    to: 'off'
+    id: trig_off
+  - type: turned_on
+    platform: device
+    device_id: a34b05a819c9d4d87ca385aa1ec28dba
+    entity_id: binary_sensor.livingroom_side_light_input_2
+    domain: binary_sensor
+    id: trig_on
+  - type: turned_off
+    platform: device
+    device_id: a34b05a819c9d4d87ca385aa1ec28dba
+    entity_id: binary_sensor.livingroom_side_light_input_2
+    domain: binary_sensor
+    id: trig_off
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: trig_on
+      sequence:
+      - data: {}
+        target:
+          entity_id:
+          - light.livingroom_leds_group
+        action: light.turn_on
+      - type: turn_on
+        device_id: c66a49528f671eca1cadc565797c22a7
+        entity_id: light.barlamp
+        domain: light
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.livingroom_back
+    - conditions:
+      - condition: trigger
+        id: trig_off
+      sequence:
+      - data: {}
+        target:
+          entity_id:
+          - light.livingroom_leds_group
+        action: light.turn_off
+      - type: turn_off
+        device_id: c66a49528f671eca1cadc565797c22a7
+        entity_id: light.barlamp
+        domain: light
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.livingroom_back
+  mode: single
+- id: '1640203283224'
+  alias: 'Light: Terrace - Switch Up'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_up
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_up
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition: []
+  action:
+  - service: light.toggle
+    target:
+      entity_id: light.terrace_up
+    data: {}
+  mode: single
+- id: '1640204496632'
+  alias: Light - Terrace - Switch Down
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_down
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: binary_sensor.shelly_terrace_down
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition: []
+  action:
+  - service: switch.toggle
+    target:
+      entity_id: switch.shelly_terrace_down
+  mode: single
+- id: '1642864207741'
+  alias: 'State: Luiza is going to sleep'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.p20lui_is_charging
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 4
+      seconds: 0
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:00
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.luiza_in_bed
+  mode: single
+- id: '1642864346387'
+  alias: 'State: Bogus is going to sleep'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.oneplus_is_charging
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 4
+      seconds: 0
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:00
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.bogus_in_bed
+  mode: single
+- id: '1642864439307'
+  alias: 'State: Bogus is up'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.oneplus_is_charging
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.bogus_in_bed
+  mode: single
+- id: '1642864507748'
+  alias: 'State: Luiza is up'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.p20lui_is_charging
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.luiza_in_bed
+  mode: single
+- id: '1644680448132'
+  alias: Movie Mode Button Off
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 0c2d5f8d232eccbf674d7739e81d8338
+    type: action
+    subtype: 'off'
+    discovery_id: 0x842e14fffe78da8d action_off
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.movie_mode
+  - service: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.livingroom_dim
+  mode: single
+- id: '1646421886391'
+  alias: 'Notify: Pantry Door Open'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.pantrydoor_contact
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  action:
+  - service: script.text_notify
+    data:
+      title: UWAGA! Drzwi spiżarni
+      message: 'Tu North. Zostawiłeś mi otwarte drzwi od spiżarni. Kusisz mnie już
+        od 5 minut. Chyba nie wytrzymam... Proszę, zamknij!!
+
+        '
+  mode: single
+- id: '1647084633863'
+  alias: 'Light: Pantry Door Open'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.pantrydoor_contact
+    to: 'on'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 2a1472dc6191c33f728f08ad11fa1bd7
+    entity_id: light.pantry_light
+    domain: light
+  mode: single
+- id: '1647084667312'
+  alias: 'Light: Pantry Door Closed'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.pantrydoor_contact
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 2a1472dc6191c33f728f08ad11fa1bd7
+    entity_id: light.pantry_light
+    domain: light
+  mode: single
+- id: '1664023835973'
+  alias: Zosia - Controller
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e1524_e1810.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_entity: sensor.ikeabutton04_action
+      helper_last_controller_event: input_text.lastevent
+      action_button_left_short:
+      - service: switch.turn_off
+        data: {}
+        target:
+          device_id: 7090ed374558a292d54700893801504e
+      action_button_right_short:
+      - service: switch.turn_on
+        data: {}
+        target:
+          device_id: 7090ed374558a292d54700893801504e
+      action_button_up_short:
+      - service: light.turn_on
+        data: {}
+        target:
+          device_id: bd92c097ed75beb5cbe5e43e96edeab4
+      action_button_down_short:
+      - service: light.turn_off
+        data: {}
+        target:
+          device_id: bd92c097ed75beb5cbe5e43e96edeab4
+      action_button_center_short:
+      - service: light.toggle
+        data: {}
+        target:
+          device_id: 12fe728cd35b1348c8cd69b103fb7310
+- id: '1665930053694'
+  alias: 'Switch: Circulation Pump Automation'
+  description: Turn on and off CirculationPump
+  trigger:
+  - platform: time
+    at: input_datetime.pump_starttime_1
+    id: trig_start
+  - platform: time
+    at: input_datetime.pump_stoptime_1
+    id: trig_stop
+  - platform: time
+    at: input_datetime.pump_starttime_2
+    id: trig_start
+  - platform: time
+    at: input_datetime.pump_stoptime_2
+    id: trig_stop
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: trig_start
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.circulatioinpumpplug
+    - conditions:
+      - condition: trigger
+        id: trig_stop
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.circulatioinpumpplug
+  mode: single
+- id: '1667336062395'
+  alias: 'Light: Hall Motion'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.hallmotion_occupancy
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.hall_dimmer
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.hallmotion_occupancy
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.hall_dimmer
+  mode: restart
+- id: '1671040495146'
+  alias: Wiktor - Light Switch - Timer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.wiktor_main_light_status
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.wiktor_main_light_status
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: counter.increment
+    data: {}
+    target:
+      entity_id: counter.wiktor_switch_counter
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.wiktor_switch_timer
+  - service: scene.turn_on
+    data: {}
+    target:
+      entity_id: scene.wiktor_{{ states('counter.wiktor_switch_counter') }}
+  mode: single
+- id: '1678618983801'
+  alias: 'Light: Bedroom Motion'
+  description: Turn on lamp when you enter bedroom at night
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.bedroommotion_occupancy
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: sun
+    after: sunset
+    before: sunrise
+  - condition: state
+    entity_id: light.bedroom_lamp
+    state: 'off'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.vifon_battery_state
+      state: Charging
+    - condition: state
+      entity_id: sensor.vifon_battery_state
+      state: Full
+  action:
+  - service: light.turn_on
+    data:
+      transition: 5
+      rgb_color:
+      - 255
+      - 147
+      - 0
+      brightness_pct: 30
+    target:
+      device_id: a47c65c2e510bcd8a1860cf116f359b4
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.bedroommotion_occupancy
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.bedroom_lamp
+  mode: single
+- id: '1679153245900'
+  alias: 'Light: Stairwell Motion'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.stairwell_motion_sensor
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.stairs_light
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.stairwell_motion_sensor
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.stairs_light
+  mode: single
+- id: '1679761206575'
+  alias: 'Light: Vestibule Motion'
+  description: Śwatło w przedsionku
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.vestibulemotion_occupancy
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      transition: 5
+    target:
+      entity_id:
+      - light.vestibule_ceiling
+      - light.hall_dimmer
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.vestibulemotion_occupancy
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+  - service: light.turn_off
+    data:
+      transition: 5
+    target:
+      entity_id:
+      - light.vestibule_ceiling
+      - light.hall_dimmer
+  mode: restart
+- id: '1690222745689'
+  alias: 'Lights: Garage Motion'
+  description: Śwatło w garażu
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.garagemotion_occupancy
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.garage
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.garagemotion_occupancy
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.garage
+  mode: restart
+- id: '1704576927033'
+  alias: 'Set Nightly Power Tariff '
+  description: Ustaw nocną taryfę prądu
+  trigger:
+  - platform: time
+    at: '13:00:00'
+  - platform: time
+    at: '22:00:00'
+  condition: []
+  action:
+  - service: select.select_option
+    target:
+      entity_id: select.power_consumption
+    data:
+      option: nightly
+  mode: single
+- id: '1704577033849'
+  alias: Set Daily Power Tariff
+  description: Ustaw nocną taryfę prądu
+  trigger:
+  - platform: time
+    at: 06:00:00
+  - platform: time
+    at: '15:00:00'
+  condition: []
+  action:
+  - service: select.select_option
+    target:
+      entity_id: select.power_consumption
+    data:
+      option: daily
+  mode: single
+- id: '1707212883701'
+  alias: 'Notify: Washing Machine Ended'
+  description: Wyślij powiadomienie o skończonym praniu
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.washing_machine
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 7
+      seconds: 0
+    from: washing
+  condition: []
+  action:
+  - service: notify.mobile_app_vifon
+    metadata: {}
+    data:
+      message: Pralka skończyła swoje. Czas jej ulżyć i przerzucić rzeczy do suszenia.
+      title: Pranie się skończyło
+  - service: notify.mobile_app_iphone_luiza
+    data:
+      title: Pranie się skończyło
+      message: Pralka skończyła robotę. Czas jej ulżyć i przerzucić rzeczy do suszenia.
+  mode: single
+- id: '1707495996171'
+  alias: 'Notify: Dryer Ended'
+  description: Wyślij powiadomienie o skończonym suszeniu
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.dryer
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 7
+      seconds: 0
+    from: drying
+  condition: []
+  action:
+  - service: notify.mobile_app_vifon
+    metadata: {}
+    data:
+      message: Suszarka is done. Czas na przyjemności, czyli składanie.
+      title: Suszenie wysuszone
+  - service: notify.mobile_app_iphone_luiza
+    data:
+      title: Sucha szosa
+      message: Suszarka ma dość. Czas na przyjemności, czyli składanie.
+  mode: single
+- id: '1709378039760'
+  alias: 'Light: Kitchen Cabinet Motion'
+  description: Światła pod szafkami
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.kitchen_cabinet_motion_occupancy
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: sun
+    after: sunset
+    after_offset: -00:55:00
+    enabled: true
+    before: sunrise
+    before_offset: 00:30:00
+  action:
+  - data: {}
+    target:
+      entity_id:
+      - light.kitchen_cabinet_light_2
+    action: light.turn_on
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.kitchen_cabinet_motion_occupancy
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 4
+        seconds: 0
+  - data: {}
+    action: light.turn_off
+    target:
+      entity_id: light.kitchen_cabinet_light_2
+  mode: restart
+- id: '1709566026831'
+  alias: 'Light: Office Desk Lamp'
+  description: Lampa biurkowa - biuro
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.office_desk_motion_occupancy
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: sun
+    after: sunset
+    after_offset: -00:55:00
+    enabled: true
+    before: sunrise
+    before_offset: 00:30:00
+  - condition: time
+    before: '23:30:00'
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id:
+      - light.office_desk_lamp
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.office_desk_motion_occupancy
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.office_desk_lamp
+  mode: restart
+- id: '1731189889049'
+  alias: 'TEMP: Bedroom External Temp'
+  description: Update thermostat temp based on external sensor
+  use_blueprint:
+    path: vibowit/z2m_aqara_trv_external_temperature.yaml
+    input:
+      external_temp_sensor: sensor.bedroomtemp_temperature
+      aqara_trv_device: 28641faa12fb1554c3191da7f768cf51
+- id: '1731190008315'
+  alias: 'TEMP: Office External Temp'
+  description: ''
+  use_blueprint:
+    path: vibowit/z2m_aqara_trv_external_temperature.yaml
+    input:
+      external_temp_sensor: sensor.officetemp_temperature
+      aqara_trv_device: 6d50fd8fa450ac9c5c5739bb56282102
+- id: '1734027563758'
+  alias: 'Lights: TV Playing'
+  description: ''
+  triggers:
+  - platform: state
+    entity_id:
+    - media_player.living_room_tlc
+    to: playing
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 4
+    id: tv_start
+  - platform: state
+    entity_id:
+    - media_player.living_room_tlc
+    from: playing
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 4
+    id: tv_stop
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - tv_start
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data:
+          transition: 10
+        target:
+          entity_id: light.livingroom_leds_group
+    - conditions:
+      - condition: trigger
+        id:
+        - tv_stop
+      - condition: sun
+        after: sunset
+        before: sunrise
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          transition: 10
+          brightness_pct: 30
+        target:
+          entity_id: light.livingroom_leds_group
+  mode: single

@@ -1,0 +1,23 @@
+parents_in_bed:
+  name: Parents in bed
+  entities:
+    - binary_sensor.bogus_in_bed
+    - binary_sensor.luiza_in_bed
+
+family:
+  name: Family
+  entities:
+    - group.rodzice
+    - group.dzieci
+
+rodzice:
+  name: Rodzice
+  entities:
+    - person.me
+    - person.luiza_witkowska
+
+dzieci:
+  name: Dzieci
+  entities:
+    - person.wiktor_witkowski
+    - person.zosia_witkowska

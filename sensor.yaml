@@ -1,0 +1,48 @@
+# - platform: darksky
+#   api_key: !secret darksky_key
+#   forecast:
+#     - 0
+#   hourly_forecast:
+#     - 0
+#     - 1
+#   monitored_conditions:
+#     - summary
+#     - icon
+#     - temperature
+#     - humidity
+#     - pressure
+#     - wind_speed
+#     - moon_phase
+#     - sunrise_time
+#     - sunset_time
+
+
+- platform: template
+  sensors:
+    energy_total:
+      friendly_name: 'Total Energy'
+      entity_id:
+        - sensor.serverplug_energy
+        - sensor.washerplug_energy
+        - sensor.dryerplug_energy
+      value_template: "{{ (states('sensor.serverplug_energy')|float + states('sensor.washerplug_energy')|float + states('sensor.dryerplug_energy')|float)|round(3) }}"
+      unit_of_measurement: "kWh"
+
+    stairs_direction:
+      friendly_name: Stairs Move Direction
+      value_template: >-
+        {% if is_state('binary_sensor.aquaramotion01_occupancy', 'on') and is_state('binary_sensor.aquaramotion02_occupancy', 'on') -%}
+          {% if as_timestamp(states.binary_sensor.aquaramotion01_occupancy.last_changed) > as_timestamp(states.binary_sensor.aquaramotion02_occupancy.last_changed) %}
+            up
+          {% else %}
+            down
+          {% endif %}
+        {% else %}
+          none
+        {% endif -%}
+
+    stairs_light:
+      friendly_name: Stairs Light Level
+      value_template: >-
+        {{ (states('sensor.aquaramotion01_illuminance')|float + states('sensor.aquaramotion02_illuminance')|float)/2.0 }}
+

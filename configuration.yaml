@@ -1,0 +1,341 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: !secret hass_property_name
+  latitude: !secret hass_latitude
+  longitude: !secret hass_longitude
+  elevation: 0
+  unit_system: metric
+  time_zone: !secret hass_timezone
+  country: PL
+  currency: PLN
+
+  # Customization file
+  customize: !include customize.yaml
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+logger:
+  default: info
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.0.0/16
+    - 0.0.0.0/0
+    - 10.10.0.0/16
+    - 10.0.0.0/16
+    - 172.0.0.0/8
+  ip_ban_enabled: true
+  login_attempts_threshold: 500
+
+api:
+
+
+recorder:
+  db_url: !secret recorder_db_url
+  purge_keep_days: 15
+  commit_interval: 30
+#  include:
+#    domains:
+#      - sensor
+#      - binary_sensor
+#      - light
+#      - timer
+#      - person
+#      - media_player
+#      - switch
+#  exclude:
+#    entities:
+
+# saving data to influxdb
+influxdb:
+  api_version: 2
+  ssl: false
+  host: !secret influx_host
+  port: 8086
+  token: !secret influx_token
+  organization: !secret influx_org
+  bucket: homeassistant
+  tags:
+    source: HomeAssistant
+  tags_attributes:
+    - friendly_name
+  default_measurement: units
+  ignore_attributes:
+    - icon
+  exclude:
+    entities:
+      - zone.home
+    domains:
+      - persistent_notification
+      - person
+  include:
+    domains:
+      - sensor
+      - binary_sensor
+      - sun
+    entities:
+      - weather.home
+
+media_player:
+  - platform: universal
+    name: living_room_tlc
+    unique_id: living_room_tlc
+    device_class: tv
+    children:
+      - media_player.smart_tv_pro
+      - media_player.living_room_tv_cast
+    browse_media_entity: media_player.living_room_tv_cast
+    commands:
+      turn_off:
+        action: media_player.turn_off
+        data:
+          entity_id: media_player.smart_tv_pro
+      turn_on:
+        action: media_player.turn_on
+        data:
+          entity_id: media_player.smart_tv_pro
+      volume_up:
+        action: media_player.volume_up
+        data:
+          entity_id: media_player.smart_tv_pro
+      volume_down:
+        action: media_player.volume_down
+        data:
+          entity_id: media_player.smart_tv_pro
+
+# google assistant
+# google_assistant:
+#   project_id: vibohass
+#   service_account: !include vibohass_service.json
+#   report_state: true
+
+# Text to speech
+# tts:
+#- platform: google_translate
+#base_url: https://hass.lan.witkowski.xyz
+#service_name: google_say
+
+# telegram_bot:
+#   - platform: broadcast
+#     - platform: polling
+#     api_key: !secret telegram_bot_key
+#     allowed_chat_ids: !secret telegram_bot_main_chat_id
+
+# required fields
+# deebot:
+#   username: vibowit@gmail.com
+#   password: DobreHaslo99
+#   country: pl
+#   continent: eu
+#   supported_features:
+#     - start
+#     - pause
+#     - stop
+#     - return_home
+#     - fan_speed
+#     - battery
+#     - status
+#     - send_command
+#     - locate
+#     - clean_spot
+#     - turn_on
+#     - turn_off
+
+notify:
+  #  - platform: telegram
+  #  name: Notifier
+  #  chat_id: !secret telegram_bot_main_chat_id
+  - name: mobile_all
+    platform: group
+    services:
+      - service: mobile_app_iphone_luiza
+      - service: mobile_app_p20lui
+      - service: mobile_app_oneplus
+      - service: mobile_app_alemaledrzwi
+      - service: mobile_app_ipad_zosia
+      - service: mobile_app_mi_9t_pro
+  - name: mobile_parents
+    platform: group
+    services:
+      - service: mobile_app_iphone_luiza
+      - service: mobile_app_p20lui
+      - service: mobile_app_oneplus
+  - name: mobile_luiza
+    platform: group
+    services:
+      - service: mobile_app_iphone_luiza
+      - service: mobile_app_p20lui
+  - name: mobile_bogus
+    platform: group
+    services:
+      - service: mobile_app_oneplus
+  - name: mobile_zosia
+    platform: group
+    services:
+      - service: mobile_app_alemaledrzwi
+      - service: mobile_app_ipad_zosia
+  - name: mobile_wiktor
+    platform: group
+    services:
+      - service: mobile_app_mi_9t_pro
+      
+# weather:
+#   - platform: darksky
+#     api_key: !secret darksky_key
+#     mode: daily
+
+spotcast:
+  sp_dc: !secret sp_dc
+  sp_key: !secret sp_key
+
+# to use with automations
+input_select: !include input_select.yaml
+input_boolean: !include input_boolean.yaml
+input_datetime: !include input_datetime.yaml
+input_number:
+  brightness_level:
+    name: Brightness Level
+    initial: 255
+    min: 0
+    max: 255
+    step: 1
+
+mqtt:
+  switch:
+    - name: Shelly Terrace Down
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0"
+      command_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/command"
+      payload_on: "on"
+      payload_off: "off"
+      retain: false
+
+    - name: Shelly Terrace Up
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1"
+      command_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1/command"
+      payload_on: "on"
+      payload_off: "off"
+      retain: false
+
+  binary_sensor:
+    - name: Shelly Terrace Down
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/input/0"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: Shelly Terrace Up
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/input/1"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: Shelly TV
+      state_topic: "shellies/shellyswitch25-8CAAB5059118/input/0"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: Shelly TV Side
+      state_topic: "shellies/shellyswitch25-8CAAB5059118/input/1"
+      payload_on: "1"
+      payload_off: "0"
+
+  sensor:
+    - name: "Shelly Terrace Down Power"
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/power"
+      unit_of_measurement: "Watts"
+
+    - name: "Shelly Terrace Down Energy"
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/0/energy"
+      unit_of_measurement: "kWh"
+
+    - name: "Shelly Terrace Up Power"
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1/power"
+      unit_of_measurement: "Watts"
+
+    - name: "Shelly Terrace Up Energy"
+      state_topic: "shellies/shellyswitch25-98F4ABF36920/relay/1/energy"
+      unit_of_measurement: "kWh"
+
+template:
+  - trigger:
+      - platform: time_pattern
+        hours: /1
+      - platform: homeassistant
+        event: start
+    action:
+      - action: calendar.get_events
+        target:
+          entity_id:
+            - calendar.ical_fcbarcelona
+        data:
+          duration:
+            days: 30
+        response_variable: calendar_events
+    sensor:
+      - name: Calendar FCBarcelona Games
+        unique_id: calendar_fcbarcelona_games
+        icon: mdi:calendar
+        state: "{{ calendar_events['calendar.ical_fcbarcelona'].events | count() }}"
+        attributes:
+          events: "{{ calendar_events['calendar.ical_fcbarcelona'].events }}"
+
+
+  - sensor:
+      - name: Office Temperature
+        unit_of_measurement: '°C'
+        state: '{{ state_attr("climate.142936511702706_climate", "current_temperature")|float }}'
+
+  - sensor:
+      - name: Bedroom Temperature
+        unit_of_measurement: '°C'
+        state: >
+          {{ states('sensor.espresense_bedroom_bme280_temperature') | float | round(1) }}
+
+  - sensor:
+      - name: Dryer
+        state: > 
+          {% if states('sensor.dryerplug_power')|float == 0.0 %}
+            off
+          {% elif  states('sensor.dryerplug_power')|float < 4.0 %}
+            standby
+          {% else %}
+            drying
+          {% endif %}
+
+  - sensor:
+      - name: Washing Machine
+        state: > 
+          {% if states('sensor.washerplug_power')|float == 0.0 %}
+            off
+          {% elif  states('sensor.washerplug_power')|float < 4.0 %}
+            standby
+          {% else %}
+            washing
+          {% endif %}
+
+## SWITCH
+switch: !include switch.yaml
+
+### LIGHTS
+light: !include light.yaml
+
+## BINARY_SENSOR
+binary_sensor: !include binary_sensor.yaml
+
+## SENSOR
+sensor: !include sensor.yaml
+
+## GROUPS
+group: !include groups.yaml
+
+## AUTOMATIONS
+automation: !include automations.yaml
+
+## SCRIPTS
+script: !include scripts.yaml
+
+## SCENES
+scene: !include scenes.yaml

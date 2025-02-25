@@ -1,0 +1,17 @@
+- platform: template
+  sensors:
+    parents_in_bed:
+      value_template: >-
+        {% if is_state('input_boolean.luiza_in_bed', 'on') or is_state('input_boolean.bogus_in_bed', 'on') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+
+
+- platform: template
+  sensors:
+    dark_stairs:
+      friendly_name: Dark Stairs
+      value_template: >-
+        {{ (states('sensor.aquaramotion01_illuminance')|float + states('sensor.aquaramotion02_illuminance')|float)/2.0 < 15 }}

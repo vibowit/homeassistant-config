@@ -1,0 +1,101 @@
+
+# - platform: mqtt
+#   name: "Screen"
+#   state_topic: "stat/RFBridge1/RfCode"
+#   command_topic: "cmnd/RFBridge1/Backlog"
+#   availability_topic: "tele/RFBridge1/LWT"
+#   payload_available: "Online"
+#   payload_not_available: "Offline"
+#   payload_on: "RfRaw AAB04D0508026C014A00C8008C10FEC081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A081A08181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A081A0A0A0A0818181818181A081B0A055;RfRaw 0"
+#   payload_off: "RfRaw AAB04B04080276014000D210D6B081A081A0A0A08181A0A0A0A0A0A0A0A0A0A0A090A0A0A0A0A081908181A0A0A0A081A08181A0A081A0A0A0A0A0A0A0A0A0A0A0A081A0818181A081818181A0A055; RfRaw 0"
+#   optimistic: true
+
+- platform: broadlink
+  mac: C8:F7:42:17:45:41
+  switches:
+    - name: Denon
+      command_on: "JgNEAAgZCDwIGQgZCBkIPAgZCBkIGQgZCDwIPAg8CBkIGQgABZUIGQg8CBkIGQgZCBkIPAg8CDwIPAgZCBkIGQg8CDwIAAWVDQUAAA=="
+      command_off: "JgNEAAgZCDwIGQgZCBkIGQg8CBkIGQgZCDwIPAg8CBkIGQgABZUIGQg8CBkIGQgZCDwIGQg8CDwIPAgZCBkIGQg8CDwIAAWVDQUAAA=="
+
+- platform: template
+  switches:
+    projector:
+      value_template: >
+        {{ is_state('input_boolean.projector_state', 'on') }}
+      turn_on:
+        - service: script.turn_on
+          entity_id: script.projector_on
+      turn_off:
+        - service: script.turn_on
+          entity_id: script.projector_off
+
+    screen:
+      value_template: "{{ is_state('input_boolean.screen_open', 'on') }}"
+      turn_on:
+        - service: esphome.livingroom_rfbridge_screen_down
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.screen_open
+      turn_off:
+        - service: esphome.livingroom_rfbridge_screen_up
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.screen_open
+
+    movie_mode:
+      friendly_name: "Movie Mode"
+      value_template: >
+        {{ is_state('input_boolean.moviemode', 'on') }}
+      turn_on:
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.moviemode
+        - service: script.moviemode_on
+      turn_off:
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.moviemode
+        - service: script.moviemode_off
+
+    video_input:
+      friendly_name: "Video Input"
+      value_template: >
+        {{ is_state('input_boolean.videoinput', 'on') }}
+      turn_on:
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.videoinput
+        - service: script.turn_on
+          entity_id: script.audiolab_video
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.audioinput
+      turn_off:
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.audioinput
+        - service: script.turn_on
+          entity_id: script.audiolab_audio
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.videoinput
+
+    audio_input:
+      friendly_name: "Audio Input"
+      value_template: >
+        {{ is_state('input_boolean.audioinput', 'on') }}
+      turn_on:
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.audioinput
+        - service: script.turn_on
+          entity_id: script.audiolab_audio
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.videoinput
+      turn_off:
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.videoinput
+        - service: script.turn_on
+          entity_id: script.audiolab_video
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.audioinput
+
+    denon_dvd:
+      friendly_name: "Denon DVD Input"
+      turn_on:
+        - service: script.turn_on
+          entity_id: script.denon_movie
+      turn_off:
+        - service: switch.turn_off
+          entity_id: switch.denon

@@ -1,0 +1,22 @@
+person.me:
+  entity_picture: /local/bogus.jpg
+person.luiza_witkowska:
+  entity_picture: /local/luiza.jpg
+person.wiktor_witkowski:
+  entity_picture: /local/wiktor.jpg
+person.zosia_witkowska:
+  entity_picture: /local/zosia.jpg
+
+person.bogus:
+  entity_picture: /local/bogus.jpg
+person.zosia:
+  entity_picture: /local/zosia.jpg
+
+group.bogus:
+  entity_picture: /local/bogus.jpg
+group.luiza:
+  entity_picture: /local/luiza.jpg
+group.zosia:
+  entity_picture: /local/zosia.jpg
+group.wiktor:
+  entity_picture: /local/wiktor.jpg

@@ -1,0 +1,41 @@
+luiza_in_bed:
+  name: 'luiza_in_bed'
+bogus_in_bed:
+  name: 'bogus_in_bed'
+
+moviemode:
+  name: Movie Mode
+  initial: off
+
+videoinput:
+  name: Vide Input
+  initial: off
+
+audioinput:
+  name: Audio Input
+  initial: off
+
+stairs_switch_auto_on:
+  name: "Stairs Light Turned On Automatically"
+  initial: off
+
+stairs_auto_on:
+  name: stairs
+  initial: off
+
+projector_state:
+  name: Projector State
+  initial: off
+
+bedroom_auto_on:
+  name: "Bedroom Automation Triggered"
+  initial: off
+
+bedroom_evening_fired:
+  name: "Bedroom Evening Used"
+  initial: off
+
+screen_open:
+    name: Projector Screen Open
+    initial: off
+    icon: mdi:projector-screen

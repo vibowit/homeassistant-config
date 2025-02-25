@@ -1,0 +1,446 @@
+moviemode_on:
+  alias: Movie Mode ON
+  sequence:
+  - service: switch.turn_on
+    entity_id:
+    - switch.audiolab_switch
+    - switch.screen
+    - switch.projector
+    - switch.denon
+  - delay: 00:00:10
+  - service: script.turn_on
+    entity_id: script.denon_movie
+  - service: switch.turn_on
+    entity_id:
+    - switch.video_input
+    - switch.projector
+  - service: scene.turn_on
+    data:
+      transition: 30
+    target:
+      entity_id:
+      - scene.movie_scene
+  - service: media_player.media_stop
+    entity_id: media_player.main_audio
+  mode: single
+moviemode_off:
+  alias: Movie Mode OFF
+  sequence:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.endmovie_scene
+    data:
+      transition: 30
+  - service: switch.turn_off
+    entity_id:
+    - switch.denon
+    - switch.projector
+    - switch.screen
+    - switch.denon
+    - switch.audiolab_switch
+  mode: single
+terrace_on:
+  alias: Turn Terrace Lights On
+  sequence:
+  - entity_id: light.terrace_1
+    service: light.turn_on
+  - delay:
+      seconds: 1
+  - entity_id: light.terrace_2
+    service: light.turn_on
+  - delay:
+      seconds: 1
+  - entity_id: light.terrace_3
+    service: light.turn_on
+terrace_off:
+  alias: Turn Terrace Lights Off
+  sequence:
+  - entity_id: light.terrace_3
+    service: light.turn_off
+  - delay:
+      seconds: 1
+  - entity_id: light.terrace_2
+    service: light.turn_off
+  - delay:
+      seconds: 1
+  - entity_id: light.terrace_1
+    service: light.turn_off
+bedroom_night_music:
+  alias: Bedroom Night Music
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.bedroom_speaker
+      volume_level: 0.1
+  - delay: 00:00:02
+spotify_livingroom_old:
+  alias: Spotify Living Room Play Old
+  description: Play Spotify Playlist in Living Room
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.main_audio
+      volume_level: 0.25
+  - service: switch.turn_on
+    entity_id: switch.audiolab_switch
+  - delay: 00:00:20
+  - service: switch.turn_on
+    entity_id: switch.audio_input
+  - service: spotcast.start
+    data:
+      uri: spotify:playlist:3qfitKDEZTfNqKEZNLW7mm
+      device_name: Main Audio
+      random_song: true
+spotify_livingroom_rock:
+  alias: Music Living Room Rock Playlist
+  description: Play Rock Playlist in Living Room
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.audiolab_switch
+  - delay: 00:00:20
+  - service: switch.turn_on
+    entity_id: switch.audio_input
+  - service: script.spotify_playlist
+    data:
+      player_id: main_audio
+      player_name: Main Audio
+      playlist: spotify:playlist:3qfitKDEZTfNqKEZNLW7mm
+      volume: 0.25
+spotify_playlist:
+  alias: Spotify Play
+  description: Play Spotify Playlist on selected player and volume
+  sequence:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.{{ player_id }}
+      volume_level: '{{ volume }}'
+  - service: spotcast.start
+    data_template:
+      uri: '{{ playlist }}'
+      device_name: '{{ player_name }}'
+      random_song: true
+spotify_evening:
+  alias: Spotify Evening
+  sequence:
+  - service: switch.turn_off
+    data:
+      entity_id: switch.audiolab_optical
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.main_audio
+      volume_level: 0.3
+  - delay: 00:00:02
+  - service: spotcast.start
+    data:
+      entity_id: media_player.main_audio
+      uri: spotify:playlist:37i9dQZF1DWXSyfX6gqDNp
+  - delay: 00:00:05
+  - service: media_player.shuffle_set
+    data:
+      entity_id: media_player.spotify_boguslaw_witkowski
+      shuffle: true
+spotify_morning:
+  alias: Spotify Morning
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: audiolab
+      command: optical
+  - service: script.turn_on
+    entity_id:
+    - script.audiolab_volume_music
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.main_audio
+      volume_level: 0.1
+  - service: spotcast.start
+    data:
+      entity_id: media_player.main_audio
+      uri: spotify:playlist:37i9dQZEVXcGYCnicb4ViV
+  - repeat:
+      count: 5
+      sequence:
+      - delay: 2
+      - service: media_player.volume_set
+        data:
+          entity_id: media_player.main_audio
+          volume_level: '{{ state_attr(''media_player.main_audio'',''volume_level'')|float
+            + 0.1 }}'
+audiolab_audio:
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: audiolab
+      command: digital_prev
+audiolab_video:
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: audiolab
+      command: video
+projector_on:
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: Benq
+      command: Turn on
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.projector_state
+projector_off:
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: Benq
+      command: Turn off
+  - delay:
+      seconds: 3
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: Benq
+      command: Turn off
+  - delay:
+      seconds: 3
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: Benq
+      command: Turn off
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.projector_state
+tv_on:
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: tv
+      command: turn on
+tv_off:
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: tv
+      command: turn off
+denon_movie:
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.denon
+  - delay: 00:00:12
+  - service: remote.send_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: denon
+      command: dvd
+audiolab_volume_up_10:
+  alias: Audio Vol UP
+  icon: mdi:volume-plus
+  sequence:
+  - repeat:
+      count: 10
+      sequence:
+      - delay: 2
+      - service: remote.send_command
+        data:
+          entity_id: remote.broadlink_mini_remote
+          device: audiolab
+          command: volume up
+  mode: queued
+
+audiolab_volume_up_5:
+  sequence:
+  - repeat:
+      count: 5
+      sequence:
+      - delay: 2
+      - service: remote.send_command
+        data:
+          entity_id: remote.broadlink_mini_remote
+          device: audiolab
+          command: volume up
+audiolab_volume_down_10:
+  alias: Audio Vol DOWN
+  icon: mdi:volume-minus
+  sequence:
+  - repeat:
+      count: 5
+      sequence:
+      - delay: 2
+      - service: remote.send_command
+        data:
+          entity_id: remote.broadlink_mini_remote
+          device: audiolab
+          command: volume down
+learn_denon_commands:
+  sequence:
+  - service: remote.learn_command
+    data:
+      entity_id: remote.broadlink_mini_remote
+      device: denon
+      command:
+      - power
+      - dvd
+      - media
+      - volume up
+      - volume down
+change_volume_gradually:
+  alias: Volume Change
+  mode: restart
+  sequence:
+  - service: media_player.volume_set
+    data_template:
+      entity_id: '{{ entity_id }}'
+      volume_level: '{{ volume_start }}'
+  - repeat:
+      count: '{{ minutes|int * 2 }}'
+      sequence:
+      - delay:
+          seconds: 30
+      - service: media_player.volume_set
+        data_template:
+          entity_id: '{{ entity_id }}'
+          volume_level: '{%- set aktual = state_attr(entity_id, ''volume_level'')
+            %} {%- set delta = (volume_start  - volume_end) | float / (minutes * 2)
+            | float %} {{  aktual - delta | float }}'
+bedroom_volume_change:
+  alias: Bedroom Volume Change
+  sequence:
+  - service: script.change_volume_gradually
+    data:
+      entity_id: media_player.bedroom_speaker
+      minutes: 3
+      volume_start: 0.15
+      volume_end: 0.04
+flash_light:
+  mode: restart
+  sequence:
+  - service: light.turn_on
+    data_template:
+      entity_id: light.{{ light }}
+  - repeat:
+      count: '{{ count|int * 2 - 1 }}'
+      sequence:
+      - delay: 2
+      - service: light.toggle
+        data_template:
+          entity_id: light.{{ light }}
+flash_tv_light:
+  sequence:
+  - service: script.flash_light
+    data:
+      light: tv
+      count: 5
+flash_zosia_light:
+  sequence:
+  - service: script.flash_light
+    data:
+      light: zosia_main
+      count: 5
+flash_wiktor_light:
+  sequence:
+  - service: script.flash_light
+    data:
+      light: wiktor
+      count: 5
+wake_up_music:
+  alias: Wake Up Music
+  sequence:
+  - condition: state
+    entity_id: binary_sensor.is_charging_p20pro
+    state: 'on'
+  - condition: state
+    entity_id: media_player.spotify_boguslaw_witkowski
+    state: idle
+  - service: media_player.volume_set
+    data:
+      volume_level: 0.12
+    entity_id: media_player.bedroom_speaker
+  - service: spotcast.start
+    data:
+      device_name: Bedroom speaker
+      uri: spotify:playlist:37i9dQZF1DX5T2mzbF9W6j
+      random_song: true
+  - service: script.change_volume_gradually
+    data:
+      entity_id: media_player.bedroom_speaker
+      minutes: 15
+      volume_start: 0.12
+      volume_end: 0.26
+  mode: single
+  icon: mdi:music
+lights_fadeout:
+  alias: Fading Out Lights
+  fields:
+    light:
+      description: Light to fade
+      example: imac_lamp
+  sequence:
+  - variables:
+      light_entity: light.{{ light }}
+  - service: input_number.set_value
+    entity_id: input_number.brightness_level
+    data:
+      value: 255
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: input_number.brightness_level
+        above: 0
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: '{{ light_entity }}'
+        data:
+          brightness: '{{ states(''input_number.brightness_level'')|int }}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: input_number.decrement
+        entity_id: input_number.brightness_level
+lights_fadein:
+  alias: Fading In Lights
+  fields:
+    light:
+      description: Light to fade
+      example: imac_lamp
+  sequence:
+  - variables:
+      light_entity: light.{{ light }}
+  - service: input_number.set_value
+    entity_id: input_number.brightness_level
+    data:
+      value: 0
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: input_number.brightness_level
+        below: 255
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: '{{ light_entity }}'
+        data:
+          brightness: '{{ states(''input_number.brightness_level'')|int }}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 70
+      - service: input_number.increment
+        entity_id: input_number.brightness_level
+text_notify:
+  sequence:
+  - service: "{% if who == 'luiza' %}\n  notify.mobile_luiza\n{% elif who == 'bogus'\
+      \ %}\n  notify.mobile_bogus\n{% elif who == 'parents' %}\n  notify.mobile_parents\n\
+      {% else %}\n  notify.mobile_all\n{% endif %}\n"
+    data:
+      title: '{{ title }}'
+      message: '{{ message }}'
+  mode: single

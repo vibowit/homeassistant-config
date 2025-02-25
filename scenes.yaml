@@ -1,0 +1,1032 @@
+- id: darken_down
+  name: Darken Down
+  entities:
+    switch.ikeaplug01_switch:
+      linkquality: 31
+      state: 'off'
+      update_available: true
+      friendly_name: IkeaPlug01
+    switch.mini03:
+      friendly_name: Mini03
+      state: 'off'
+    switch.mini04:
+      friendly_name: Mini04
+      state: 'off'
+    switch.mini06:
+      friendly_name: Mini06
+      state: 'off'
+    light.kitchen_upper:
+      friendly_name: Kitchen Upper
+      supported_features: 0
+      state: 'off'
+- id: enlighten_down
+  name: Enlighten Down
+  entities:
+    switch.mini03:
+      friendly_name: Mini03
+      state: 'on'
+    switch.mini04:
+      friendly_name: Mini04
+      state: 'on'
+    switch.mini06:
+      friendly_name: Mini06
+      state: 'on'
+    switch.ikeaplug01_switch:
+      linkquality: 65
+      state: 'on'
+      update_available: true
+      friendly_name: IkeaPlug01
+    light.kitchen_upper:
+      friendly_name: Kitchen Upper
+      supported_features: 0
+      state: 'on'
+    light.tv:
+      friendly_name: TV
+      supported_features: 0
+      state: 'on'
+    light.tv_side:
+      friendly_name: TV Side
+      supported_features: 0
+      state: 'on'
+    light.stairs_christmas:
+      friendly_name: Stairs Christmas
+      supported_features: 0
+      state: 'on'
+- id: '1609587500796'
+  name: Christmas
+  entities:
+    light.tv:
+      friendly_name: TV
+      supported_features: 0
+      state: 'on'
+    light.stairs_christmas:
+      friendly_name: Stairs Christmas
+      supported_features: 0
+      state: 'on'
+    light.zosia_wall:
+      friendly_name: Choinka
+      supported_features: 0
+      state: 'on'
+- id: '1610725345929'
+  name: Leave Home
+  entities:
+    light.inside_lights:
+      entity_id:
+      - light.downstairs_lights
+      - light.upstairs_lights
+      friendly_name: Inside Lights
+      icon: mdi:lightbulb-group
+      supported_features: 8
+      state: 'off'
+  icon: mdi:home-export-outline
+- id: '1610725547056'
+  name: Arrive Home
+  entities:
+    light.tv:
+      friendly_name: TV
+      supported_features: 0
+      state: 'on'
+    light.tv_side:
+      friendly_name: TV Side
+      supported_features: 0
+      state: 'on'
+    light.kitchen_table:
+      friendly_name: Kitchen Table
+      supported_features: 0
+      state: 'on'
+    light.hall:
+      friendly_name: Hall
+      supported_features: 0
+      state: 'on'
+    light.stairs:
+      friendly_name: Stairs
+      supported_features: 0
+      state: 'on'
+  icon: mdi:home-outline
+- id: '1610752476532'
+  name: Test Music
+  entities:
+    media_player.spotify_boguslaw_witkowski:
+      source_list:
+      - Bedroom speaker
+      volume_level: 0.15
+      media_content_id: spotify:track:70lBliYWLJe5kJhvFlbJiH
+      media_content_type: music
+      media_duration: 174.496
+      media_position: 28.639
+      media_position_updated_at: '2021-01-15T23:13:51.043000+00:00'
+      media_title: Złoto
+      media_artist: MaJLo, Natalia Grosiak
+      media_album_name: Złoto
+      media_track: 1
+      media_playlist: Zimowy chill
+      source: Bedroom speaker
+      shuffle: false
+      repeat: 'off'
+      friendly_name: Spotify Boguslaw Witkowski
+      icon: mdi:spotify
+      entity_picture: /api/media_player_proxy/media_player.spotify_boguslaw_witkowski?token=5af9708c86d95202319713dd5725a43767673360ba5972b7284eda2eb7ccfb47&cache=a4c14825f6a4ad7c
+      supported_features: 444983
+      state: playing
+- id: '1613948985516'
+  name: Bedroom Evening
+  entities: {}
+- id: '1636411957642'
+  name: After Movie
+  entities:
+    light.livingroom_lamps:
+      min_mireds: 153
+      max_mireds: 500
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 150
+      hs_color:
+      - 15.688
+      - 85.49
+      rgb_color:
+      - 255
+      - 94
+      - 37
+      xy_color:
+      - 0.64
+      - 0.336
+      color_temp: 65
+      friendly_name: Livingroom Lamps
+      supported_features: 59
+      state: 'on'
+    light.livingroom_leds:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 87
+      friendly_name: Livingroom Leds
+      supported_features: 41
+      state: 'on'
+- id: '1640217657736'
+  name: Bedroom Bright
+  entities:
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 255
+      hs_color:
+      - 0
+      - 0
+      rgb_color:
+      - 255
+      - 255
+      - 255
+      xy_color:
+      - 0.323
+      - 0.329
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'
+    light.bedroomlamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 0
+      - 0.392
+      rgb_color:
+      - 255
+      - 254
+      - 254
+      xy_color:
+      - 0.323
+      - 0.329
+      color:
+        x: 0.323
+        y: 0.329
+      linkquality: 39
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Bedroom Lamp
+      supported_features: 63
+      state: 'on'
+    select.bedroomlamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 254
+      color:
+        x: 0.323
+        y: 0.329
+      color_mode: xy
+      linkquality: 39
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: Bedroom Lamp power on behavior
+      state: unknown
+  icon: mdi:moon-full
+- id: '1640217856314'
+  name: Bedroom Dim
+  entities:
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 156
+      hs_color:
+      - 150.118
+      - 100
+      rgb_color:
+      - 0
+      - 255
+      - 128
+      xy_color:
+      - 0.164
+      - 0.589
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'
+    light.bedroomlamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 128
+      hs_color:
+      - 90.118
+      - 100
+      rgb_color:
+      - 127
+      - 255
+      - 0
+      xy_color:
+      - 0.269
+      - 0.665
+      color:
+        x: 0.269
+        y: 0.665
+      linkquality: 36
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Bedroom Lamp
+      supported_features: 63
+      state: 'on'
+    select.bedroomlamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 128
+      color:
+        x: 0.269
+        y: 0.665
+      color_mode: xy
+      linkquality: 36
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: Bedroom Lamp power on behavior
+      state: unknown
+  icon: mdi:moon-last-quarter
+- id: '1640218013110'
+  name: Bedroom Dark
+  entities:
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 150
+      hs_color:
+      - 29.843
+      - 74.902
+      rgb_color:
+      - 255
+      - 159
+      - 64
+      xy_color:
+      - 0.55
+      - 0.392
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'
+    light.bedroomlamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 66
+      hs_color:
+      - 30.119
+      - 99.216
+      rgb_color:
+      - 255
+      - 129
+      - 2
+      xy_color:
+      - 0.612
+      - 0.374
+      color:
+        x: 0.612
+        y: 0.374
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Bedroom Lamp
+      supported_features: 63
+      state: 'on'
+    select.bedroomlamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 66
+      color:
+        x: 0.612
+        y: 0.374
+      color_mode: xy
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: Bedroom Lamp power on behavior
+      state: unknown
+  icon: mdi:moon-waning-crescent
+- id: '1640218443696'
+  name: Zosia Bright
+  entities:
+    light.zosialamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 255
+      hs_color:
+      - 0
+      - 0.392
+      rgb_color:
+      - 255
+      - 254
+      - 254
+      xy_color:
+      - 0.323
+      - 0.329
+      color:
+        x: 0.323
+        y: 0.329
+      linkquality: 90
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Zosia Lamp
+      supported_features: 63
+      state: 'on'
+    select.zosialamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 254
+      color:
+        x: 0.323
+        y: 0.329
+      color_mode: xy
+      color_temp: 250
+      linkquality: 90
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: ZosiaLamp power on behavior
+      state: unknown
+    light.zosia_main_light:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Zosia Main Light
+      supported_features: 8
+      state: 'on'
+    light.zosia_wall:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:string-lights
+      friendly_name: Zosia Wall
+      supported_features: 0
+      state: 'on'
+  icon: mdi:moon-full
+- id: '1640218565720'
+  name: Zosia Dim
+  entities:
+    light.zosialamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 117
+      hs_color:
+      - 30.119
+      - 99.216
+      rgb_color:
+      - 255
+      - 129
+      - 2
+      xy_color:
+      - 0.612
+      - 0.374
+      color:
+        x: 0.612
+        y: 0.374
+      linkquality: 87
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Zosia Lamp
+      supported_features: 63
+      state: 'on'
+    select.zosialamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 117
+      color:
+        x: 0.612
+        y: 0.374
+      color_mode: xy
+      color_temp: 454
+      linkquality: 87
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: ZosiaLamp power on behavior
+      state: unknown
+    light.zosia_wall:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      icon: mdi:string-lights
+      friendly_name: Zosia Wall
+      supported_features: 0
+      state: 'on'
+    light.zosia_main_light:
+      supported_color_modes:
+      - onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Zosia Main Light
+      supported_features: 8
+      state: 'off'
+  icon: mdi:moon-last-quarter
+- id: '1640218680739'
+  name: Zosia Dark
+  entities:
+    light.zosia_main_light:
+      supported_color_modes:
+      - onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Zosia Main Light
+      supported_features: 8
+      state: 'off'
+    light.zosia_wall:
+      supported_color_modes:
+      - onoff
+      icon: mdi:string-lights
+      friendly_name: Zosia Wall
+      supported_features: 0
+      state: 'off'
+    light.zosialamp:
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 48
+      hs_color:
+      - 299.754
+      - 95.686
+      rgb_color:
+      - 254
+      - 11
+      - 255
+      xy_color:
+      - 0.385
+      - 0.155
+      color:
+        x: 0.385
+        y: 0.155
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:lamp-outline
+      friendly_name: Zosia Lamp
+      supported_features: 63
+      state: 'on'
+    select.zosialamp_power_on_behavior:
+      options:
+      - 'off'
+      - previous
+      - 'on'
+      brightness: 48
+      color:
+        x: 0.385
+        y: 0.155
+      color_mode: xy
+      color_temp: 250
+      linkquality: 99
+      power_on_behavior:
+      update:
+        state: idle
+      update_available: false
+      icon: mdi:power-settings
+      friendly_name: ZosiaLamp power on behavior
+      state: unknown
+  icon: mdi:moon-waning-crescent
+- id: '1642962420011'
+  name: Bedroom Night Walk
+  entities:
+    switch.bedroom_ble_hub_reboot:
+      icon: mdi:restart
+      friendly_name: Bedroom BLE Hub REBOOT
+      state: 'off'
+    light.bedroom_bed_rgb:
+      effect_list:
+      - None
+      - Random
+      - Slow Random Effect
+      - Fast Random Effect
+      supported_color_modes:
+      - rgb
+      color_mode: rgb
+      brightness: 74
+      hs_color:
+      - 344.941
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 64
+      xy_color:
+      - 0.666
+      - 0.284
+      effect: None
+      icon: mdi:led-strip-variant
+      friendly_name: Bedroom Bed RGB
+      supported_features: 44
+      state: 'on'
+- id: '1671038887823'
+  name: wiktor_1
+  entities:
+    light.wiktor_main_light:
+      supported_color_modes:
+      - onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Wiktor Main Light
+      supported_features: 8
+      color_mode: onoff
+      state: 'on'
+    light.wiktor_lgbt:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      - hs
+      color:
+        h: 359
+        hue: 359
+        s: 100
+        saturation: 100
+      linkquality: 45
+      white_brightness: 0
+      icon: mdi:led-strip-variant
+      friendly_name: Wiktor RGB
+      supported_features: 40
+      color_mode: hs
+      brightness: 3
+      hs_color:
+      - 359
+      - 100
+      rgb_color:
+      - 255
+      - 0
+      - 4
+      xy_color:
+      - 0.7
+      - 0.299
+      state: 'on'
+    number.wiktor_lgbt_white_brightness:
+      min: 0
+      max: 254
+      step: 1
+      mode: auto
+      brightness: 3
+      color:
+        h: 359
+        hue: 359
+        s: 100
+        saturation: 100
+      color_mode: hs
+      color_temp: 454
+      linkquality: 45
+      white_brightness: 0
+      friendly_name: wiktor_lgbt_white_brightness
+      state: '0'
+  metadata: {}
+- id: '1671041001825'
+  name: wiktor_0
+  entities:
+    light.wiktor_main_light:
+      supported_color_modes:
+      - onoff
+      icon: mdi:ceiling-light-outline
+      friendly_name: Wiktor Main Light
+      supported_features: 8
+      state: 'off'
+    light.wiktor_lgbt:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      - hs
+      color:
+        h: 359
+        hue: 359
+        s: 100
+        saturation: 100
+      linkquality: 42
+      white_brightness: 0
+      icon: mdi:led-strip-variant
+      friendly_name: Wiktor RGB
+      supported_features: 40
+      state: 'off'
+    number.wiktor_lgbt_white_brightness:
+      min: 0
+      max: 254
+      step: 1
+      mode: auto
+      brightness: 3
+      color:
+        h: 359
+        hue: 359
+        s: 100
+        saturation: 100
+      color_mode: hs
+      color_temp: 454
+      linkquality: 42
+      white_brightness: 0
+      friendly_name: wiktor_lgbt_white_brightness
+      state: '0'
+  metadata: {}
+- id: '1708370598786'
+  name: Livingroom Dim
+  entities:
+    light.livingroom_back:
+      min_color_temp_kelvin: 2702
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Alarm
+      - Candle Flicker
+      - Christmas
+      - Date Night
+      - Disco
+      - Facebook
+      - Fast Random Loop
+      - Happy Birthday
+      - Home
+      - LSD
+      - Movie
+      - Night Mode
+      - Police
+      - Police2
+      - RGB
+      - Random Loop
+      - Romance
+      - Slow Temp
+      - Slowdown
+      - Stop
+      - Strobe color
+      - Strobe epilepsy!
+      - Sunrise
+      - Sunset
+      - Tea Time
+      - Twitter
+      - WhatsApp
+      supported_color_modes:
+      - color_temp
+      - hs
+      - rgb
+      color_mode: rgb
+      brightness: 87
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 53.97
+      - 78.039
+      rgb_color:
+      - 255
+      - 235
+      - 56
+      xy_color:
+      - 0.459
+      - 0.484
+      effect:
+      entity_id:
+      - light.yeelight_colorc_0x1b183261
+      - light.yeelight_colorc_0x1b40a6b1
+      icon: mdi:wall-sconce-outline
+      friendly_name: LivingRoom Back
+      supported_features: 44
+      state: 'on'
+    light.livingroom_leds_group:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 13
+      effect:
+      color:
+        x: 0.321708501618868
+        y: 0.331405888584047
+      icon: mdi:lightbulb-spot
+      friendly_name: Livingroom Leds
+      supported_features: 44
+      state: 'on'
+    light.barlamp:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      color_mode: xy
+      brightness: 15
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 28.073
+      - 85.49
+      rgb_color:
+      - 255
+      - 139
+      - 37
+      xy_color:
+      - 0.591
+      - 0.38
+      effect:
+      color:
+        x: 0.591
+        y: 0.38
+      color_options:
+      level_config:
+        on_level: previous
+      linkquality: 87
+      power_on_behavior: previous
+      update:
+        installed_version: 268572245
+        latest_version: 268572245
+        state: idle
+      update_available: false
+      friendly_name: BarLamp
+      supported_features: 44
+      state: 'on'
+    light.livingroom_tv_light:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:led-strip-variant
+      friendly_name: TV Light
+      supported_features: 40
+      state: 'off'
+  metadata:
+    light.livingroom_back:
+      entity_only: true
+    light.livingroom_leds_group:
+      entity_only: true
+    light.barlamp:
+      entity_only: true
+    light.livingroom_tv_light:
+      entity_only: true
+- id: '1709380178861'
+  name: Movie Scene
+  entities:
+    light.livingroom_color:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      effect_list:
+      - Alarm
+      - Candle Flicker
+      - Christmas
+      - Date Night
+      - Disco
+      - Facebook
+      - Fast Random Loop
+      - Happy Birthday
+      - Home
+      - LSD
+      - Movie
+      - Night Mode
+      - Police
+      - Police2
+      - RGB
+      - Random Loop
+      - Romance
+      - Slow Temp
+      - Slowdown
+      - Stop
+      - Strobe color
+      - Strobe epilepsy!
+      - Sunrise
+      - Sunset
+      - Tea Time
+      - Twitter
+      - WhatsApp
+      - blink
+      - breathe
+      - channel_change
+      - finish_effect
+      - okay
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - hs
+      - rgb
+      - xy
+      color_mode: rgb
+      brightness: 23
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 241.931
+      - 91.373
+      rgb_color:
+      - 29
+      - 22
+      - 255
+      xy_color:
+      - 0.141
+      - 0.047
+      effect:
+      entity_id:
+      - light.livingroom_back
+      - light.barlamp
+      icon: mdi:lightbulb-group
+      friendly_name: Livingroom Color
+      supported_features: 44
+      state: 'on'
+    light.livingroom_leds_group:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - brightness
+      color_mode:
+      brightness:
+      effect:
+      color:
+        x: 0.321708501618868
+        y: 0.331405888584047
+      icon: mdi:lightbulb-spot
+      friendly_name: Livingroom Leds
+      supported_features: 44
+      state: 'off'
+    light.livingroom_tv_light:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:led-strip-variant
+      friendly_name: TV Light
+      supported_features: 40
+      state: 'off'
+  metadata:
+    light.livingroom_color:
+      entity_only: true
+    light.livingroom_leds_group:
+      entity_only: true
+    light.livingroom_tv_light:
+      entity_only: true
+  icon: mdi:theater
