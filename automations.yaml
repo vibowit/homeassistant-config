@@ -77,25 +77,6 @@
   - service: input_boolean.turn_off
     entity_id: input_boolean.stairs_switch_auto_on
   mode: single
-- id: movie_mode_button
-  alias: Movie Mode Button On
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 0c2d5f8d232eccbf674d7739e81d8338
-    type: action
-    subtype: 'on'
-    discovery_id: 0x842e14fffe78da8d action_on
-  action:
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.movie_mode
-  - service: scene.turn_on
-    metadata: {}
-    target:
-      entity_id: scene.movie_scene
-  mode: single
 - id: turn_on_porch
   alias: Turn On Porch Light
   description: Turn on porch light when the sun is set
@@ -171,24 +152,6 @@
   action:
   - service: input_boolean.turn_off
     entity_id: input_boolean.bedroom_evening_fired
-- id: '1614966989339'
-  alias: 'Light: Living Room TV Toggle Button'
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 247eb9e582f3e489b6e66fb59d3f59af
-    type: action
-    subtype: brightness_up_hold
-    discovery_id: 0x5c0272fffe3fb687 action_brightness_up_hold
-  condition: []
-  action:
-  - service: light.toggle
-    data:
-      brightness_pct: 100
-    target:
-      entity_id: light.livingroom_tv_light
-  mode: single
 - id: lights-midnight-shutdown
   alias: 'Lights: Turn off lights and music at midnight'
   trigger:
@@ -205,104 +168,6 @@
     data:
       transition: 120
   initial_state: 'on'
-  mode: single
-- id: light-zosia-button-on
-  alias: 'Light: Zosia Wall - Button On'
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 2e8ecd35f0a1e3c7fa1a2e6cb1c1f0d3
-    type: click
-    subtype: 'on'
-    discovery_id: 0xec1bbdfffe992a86 click_on
-  condition: []
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.zosiaplug
-  mode: single
-- id: light-zosia-button-off
-  alias: 'Light: Zosia Wall - Button Off'
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 2e8ecd35f0a1e3c7fa1a2e6cb1c1f0d3
-    type: click
-    subtype: 'off'
-    discovery_id: 0xec1bbdfffe992a86 click_off
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id: switch.zosiaplug
-  mode: single
-- id: '1640107464435'
-  alias: 'Light: Living Room - Leds Switch'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.livingroom_side_light_input
-    from: 'off'
-    to: 'on'
-    id: trig_on
-  - platform: state
-    entity_id:
-    - binary_sensor.livingroom_side_light_input
-    from: 'on'
-    to: 'off'
-    id: trig_off
-  - type: turned_on
-    platform: device
-    device_id: a34b05a819c9d4d87ca385aa1ec28dba
-    entity_id: binary_sensor.livingroom_side_light_input_2
-    domain: binary_sensor
-    id: trig_on
-  - type: turned_off
-    platform: device
-    device_id: a34b05a819c9d4d87ca385aa1ec28dba
-    entity_id: binary_sensor.livingroom_side_light_input_2
-    domain: binary_sensor
-    id: trig_off
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: trig_on
-      sequence:
-      - data: {}
-        target:
-          entity_id:
-          - light.livingroom_leds_group
-        action: light.turn_on
-      - type: turn_on
-        device_id: c66a49528f671eca1cadc565797c22a7
-        entity_id: light.barlamp
-        domain: light
-      - action: light.turn_on
-        metadata: {}
-        data: {}
-        target:
-          entity_id: light.livingroom_back
-    - conditions:
-      - condition: trigger
-        id: trig_off
-      sequence:
-      - data: {}
-        target:
-          entity_id:
-          - light.livingroom_leds_group
-        action: light.turn_off
-      - type: turn_off
-        device_id: c66a49528f671eca1cadc565797c22a7
-        entity_id: light.barlamp
-        domain: light
-      - action: light.turn_off
-        metadata: {}
-        data: {}
-        target:
-          entity_id: light.livingroom_back
   mode: single
 - id: '1640203283224'
   alias: 'Light: Terrace - Switch Up'
@@ -430,27 +295,6 @@
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.luiza_in_bed
-  mode: single
-- id: '1644680448132'
-  alias: Movie Mode Button Off
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 0c2d5f8d232eccbf674d7739e81d8338
-    type: action
-    subtype: 'off'
-    discovery_id: 0x842e14fffe78da8d action_off
-  condition: []
-  action:
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id: switch.movie_mode
-  - service: scene.turn_on
-    metadata: {}
-    target:
-      entity_id: scene.livingroom_dim
   mode: single
 - id: '1646421886391'
   alias: 'Notify: Pantry Door Open'
