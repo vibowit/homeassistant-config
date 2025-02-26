@@ -1,0 +1,54 @@
+---
+substitutions:
+  device: kitchen-climate
+  name: "Kitchen Climate"
+  reboot_timeout: 2d
+  update_interval: 5min
+
+esphome:
+  name: ${device}
+
+esp8266:
+  board: d1_mini
+
+<<: !include common/common.yaml
+# Enable logging
+logger:
+  level: INFO
+
+web_server:
+  port: 80
+
+i2c:
+ # sda: D1
+ # scl: D2
+ # scan: True
+  id: bus_a
+
+sensor:
+  - platform: bme280_i2c
+    temperature:
+      name: "Kitchen Temperature"
+    pressure:
+      name: "Kitchen Pressure"
+    humidity:
+      name: "Kitchen Humidity"
+    update_interval: 60s
+    i2c_id: bus_a
+    address: 0x76
+
+  - platform: bh1750
+    name: "Kitchen Illuminance"
+    address: 0x23
+    update_interval: 15s
+
+  - platform: wifi_signal
+    name: ${device} Wifi Signal Strength
+    update_interval: 60s
+  - platform: uptime
+    name: ${device} Uptime
+
+switch:
+  - platform: restart
+    name: "${name} Restart"
+

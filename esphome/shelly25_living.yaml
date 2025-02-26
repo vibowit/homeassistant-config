@@ -1,0 +1,137 @@
+---
+substitutions:
+  device: shelly25_living
+  name: "Shelly Living Room"
+  # Name for the relays
+  channel_1: "LivingRoom TV Light"
+  channel_2: "LivingRoom Side Light"
+  max_power: "2000.0" # watt
+  max_temp: "80.0" # °C
+  reboot_timeout: 2d
+  update_interval: 5min
+
+esphome:
+  name: ${device}
+  platform: ESP8266
+  board: esp01_1m
+
+mqtt:
+  broker: 192.168.1.31
+  username: hass
+  password: hass
+  discovery: true
+
+# <<: !include common/common.yaml
+<<: !include common/wifi.yaml
+<<: !include common/ota.yaml
+<<: !include common/web_server.yaml
+<<: !include common/text_sensors.yaml
+
+# Enable logging
+logger:
+  level: INFO
+
+
+i2c:
+  sda: GPIO12
+  scl: GPIO14
+
+sensor:
+  - platform: ade7953
+    voltage:
+      name: ${device} voltage
+    current_a:
+      name: ${channel_2} current
+      internal: true
+    current_b:
+      name: ${channel_1} current
+      internal: true
+    active_power_a:
+      name: ${channel_2} power
+      id: power_channel_2
+      filters:
+        - multiply: 1
+ 
+    active_power_b:
+      name: ${channel_1} power
+      id: power_channel_1
+      filters:
+        - multiply: -1
+      
+    update_interval: 30s
+
+  # NTC Temperature
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: ${device} temperature
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: A0
+
+status_led:
+  pin:
+    number: GPIO0
+    inverted: yes
+
+output:
+  - platform: gpio
+    pin: GPIO4
+    id: shelly_25_relay_1
+
+switch:
+  - platform: gpio
+    name: "LivingRoom Side Light Switch"
+    restore_mode: RESTORE_DEFAULT_ON
+    pin: GPIO15
+    id: shelly_25_relay_2
+
+  - platform: restart
+    name: "${name} Restart"
+
+light:
+  - platform: binary
+    name: "${channel_1}"
+    output: shelly_25_relay_1
+    id: lightid1
+
+#  - platform: binary
+#    name: "${channel_2}"
+#    output: shelly_25_relay_2
+#    id: lightid2
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO13
+    name: "LivingRoom Side Light input"
+    # internal: true
+    #on_state:
+    #  then:
+    #    - light.toggle: lightid2
+  - platform: gpio
+    pin:
+      number: GPIO5
+    name: "LivingRoom TV Light input"
+    internal: true
+    on_state:
+      then:
+        - light.toggle: lightid1
+
+  # Prevent short circuit with "floating" pin!
+  - platform: gpio
+    pin: GPIO16
+    name: "ade7953 IRQ pin"
+    internal: true

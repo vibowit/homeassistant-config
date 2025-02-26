@@ -1,0 +1,55 @@
+---
+substitutions:
+  device: pantry-light
+  name: "Pantry Light"
+  reboot_timeout: 2d
+  update_interval: 5min
+
+esphome:
+  name: ${device}
+  platform: ESP8266
+  board: esp01_1m
+
+<<: !include common/common.yaml
+# Enable logging
+logger:
+  level: INFO
+
+web_server:
+  port: 80
+
+sensor:
+  - platform: wifi_signal
+    name: ${device} Wifi Signal Strength
+    update_interval: 60s
+  - platform: uptime
+    name: ${device} Uptime
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: gpio12
+
+binary_sensor:
+  - platform: gpio
+    name: ${device}_status
+    pin: GPIO04
+    id: switch_1
+    on_press:
+      then:
+        - light.toggle:
+            id: light_1
+    on_release:
+      then:
+        - light.toggle:
+            id: light_1
+
+light:
+  - platform: binary
+    name: ${name}
+    output: gpio12
+    id: light_1
+
+switch:
+  - platform: restart
+    name: "${name} Restart"

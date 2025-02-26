@@ -1,0 +1,41 @@
+---
+substitutions:
+  device: terrace_down_light
+  name: "Terrace Down Light"
+  reboot_timeout: 2d
+  update_interval: 5min
+
+esphome:
+  name: ${device}
+  platform: ESP8266
+  board: esp01_1m
+
+<<: !include common/common.yaml
+# Enable logging
+logger:
+  level: INFO
+
+web_server:
+  port: 80
+  
+sensor:
+  - platform: wifi_signal
+    name: ${device} Wifi Signal Strength
+    update_interval: 5min
+  - platform: uptime
+    name: ${device} Uptime
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: gpio12
+
+light:
+  - platform: binary
+    name: ${name}
+    output: gpio12
+    restore_mode: always_on
+
+switch:
+  - platform: restart
+    name: "${name} Restart"

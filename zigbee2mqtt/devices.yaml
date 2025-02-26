@@ -1,0 +1,109 @@
+'0x00158d000421d401':
+  friendly_name: Top_Floor_Stairwell_Motion
+  description: Stairs up motion sensor
+'0x00158d0004523948':
+  friendly_name: Down_Stairwell_Motion
+  description: Stairs down motion sensor
+'0x00158d00045fb751':
+  friendly_name: BedroomMotion
+'0x5c0272fffe3fb687':
+  friendly_name: IkeaButton04
+  legacy: false
+'0x5c0272fffe8831b1':
+  friendly_name: IkeaRouter01
+'0x5c0272fffe87bd0f':
+  friendly_name: IkeaRouter02
+'0xec1bbdfffed7d3cf':
+  friendly_name: BarLamp
+  legacy: false
+'0xbc33acfffe2ccb3a':
+  friendly_name: ZosiaPlug
+'0xec1bbdfffe992a86':
+  friendly_name: ZosiaIkeaButton
+  legacy: false
+'0x00178801099e8e94':
+  friendly_name: '0x00178801099e8e94'
+'0xa4c1384e60fcbade':
+  friendly_name: DryerPlug
+'0xa4c138789018e713':
+  friendly_name: WasherPlug
+'0xec1bbdfffe75404e':
+  friendly_name: Bedroom Lamp
+'0x84b4dbfffec8119d':
+  friendly_name: wiktor_lgbt
+  description: Wiktor Ceiling RGB Lights
+'0x84b4dbfffec8109a':
+  friendly_name: zosia_ceil_rgb
+  description: Zosia Ceiling RGB Lights
+'0x54ef4410007410da':
+  friendly_name: BedroomThermostat
+  thermostat_unit: celsius
+'0x00124b0029193f7b':
+  friendly_name: BathroomTemp
+  description: Czujnik temperatury łazienka
+'0x00178801024c1a16':
+  friendly_name: '0x00178801024c1a16'
+'0x00158d00045fa0af':
+  friendly_name: HallMotion
+'0x60a423fffeed507b':
+  friendly_name: LivingRoomLed1
+'0x60a423fffeebf504':
+  friendly_name: LivingRoomLed3
+'0xbc33acfffed54da5':
+  friendly_name: LivingRoomLed2
+'0xa4c1385adfeeffb5':
+  friendly_name: VestibuleSwitch
+'0x00158d0004523947':
+  friendly_name: GarageMotion
+'0x00158d0007e03dca':
+  friendly_name: PantryDoor
+'0x842e14fffe78da8d':
+  friendly_name: MovieButton
+  description: Luvingroom button that turns on/off movie mode
+  legacy: false
+'0x00124b002517849b':
+  friendly_name: VestibuleMotion
+'0x00124b0029195ef5':
+  friendly_name: OfficeTemp
+  description: Czujnik temperatury gabinet
+'0xa4c1385911075153':
+  friendly_name: ServerPlug
+'0x54ef4410002a694b':
+  friendly_name: LivingroomTemp
+  description: Jakość powietrza pokój dzienny
+'0x680ae2fffe79385a':
+  friendly_name: ZoskaLamp
+'0x14b457fffed52281':
+  friendly_name: Office Desk Lamp
+'0xa4c1384c2f61dac3':
+  friendly_name: HallUp2Switch
+'0x00124b00292acbf2':
+  friendly_name: Livingroom Motion
+'0x00124b0025142fc7':
+  friendly_name: Office Desk Motion
+'0x54ef4410007f67b4':
+  friendly_name: OfficeThermostat
+'0xa4c13859ced5951d':
+  friendly_name: TerraceSwitch
+'0xa4c138960dcd3a1a':
+  friendly_name: DishwasherPlug
+'0x54ef441000bffa31':
+  friendly_name: BathroomSwitch
+'0x00124b00251789ac':
+  friendly_name: Kitchen Cabinet Motion
+'0x00124b00292acbc0':
+  friendly_name: '0x00124b00292acbc0'
+'0xa4c1389f6ba6853f':
+  friendly_name: Kitchen Cabinet Light
+'0xa4c138d9b559b999':
+  friendly_name: LivingRoom Flower
+'0xa4c1386ad1aa2992':
+  friendly_name: ChristmasTree Plug
+'0xa4c1384873453867':
+  friendly_name: Wiktor Switch
+'0x00158d0001910698':
+  friendly_name: '0x00158d0001910698'
+'0x6c5cb1fffe2b0268':
+  friendly_name: '0x6c5cb1fffe2b0268'
+'0x00158d00046068a1':
+  friendly_name: BedroomTemp

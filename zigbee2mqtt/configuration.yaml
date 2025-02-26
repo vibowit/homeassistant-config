@@ -1,0 +1,40 @@
+version: 4
+homeassistant:
+  enabled: true
+devices:
+  - devices.yaml
+groups:
+  - groups.yaml
+advanced:
+  pan_id: 6754
+  channel: 11
+  network_key:
+    - 1
+    - 3
+    - 5
+    - 7
+    - 9
+    - 11
+    - 13
+    - 15
+    - 0
+    - 2
+    - 4
+    - 6
+    - 8
+    - 10
+    - 12
+    - 13
+  log_level: info
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://core-mosquitto:1883
+  user: addons
+  password: cud5ood0iTh6ahShawaiwez7meecu4Eish7AibahNgaej8rohghie4toh1vai7oh
+  reject_unauthorized: true
+frontend:
+  enabled: true
+  port: 8099
+serial:
+  adapter: zstack
+  port: /dev/ttyUSB0

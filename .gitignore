@@ -3,6 +3,7 @@
 *.db
 *.db-*
 *.sqlite
+*_backup.*
 
 .HA_VERSION
 secrets.yaml
@@ -19,8 +20,8 @@ custom_components/
 tts/
 www/
 themes/
-zigbee2mqtt/
-esphome/
+zigbee2mqtt/state.json
+esphome/*/
 backups/
 
 blueprints/
